@@ -1,2 +1,2 @@
 # ExtensibleMessageBroker
-Extensible message broker with many use cases
+Extensible message broker for multiple purposes

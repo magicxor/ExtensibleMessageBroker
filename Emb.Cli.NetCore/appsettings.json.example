@@ -1,0 +1,22 @@
+{
+  "EmbConfiguration": {
+    "DataFlows": [
+      {
+        "Name": "Task1",
+        "Source": {
+          "ProviderName": "DvachDataSourceProvider",
+          "EndpointOptions": "b"
+        },
+        "Targets": [
+          {
+            "ProviderName": "FileTargetProvider",
+            "EndpointOptions": "2ch_b_threads"
+          }
+        ]
+      }
+    ],
+    "LogLevel": "Debug",
+    "LogDirectoryName": "logs"
+  }
+
+}
