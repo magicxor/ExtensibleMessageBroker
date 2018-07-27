@@ -5,6 +5,6 @@ namespace Emb.Common.Abstractions
 {
     public interface IDataSourceProvider
     {
-        Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(IConfigurationRoot configurationRoot, string options);
+        Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString);
     }
 }

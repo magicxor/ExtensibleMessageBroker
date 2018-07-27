@@ -4,7 +4,7 @@ namespace Emb.Common.Abstractions
 {
     public interface IDataFetchResult
     {
-        IEnumerable<string> Items { get; set; }
+        IList<string> Items { get; set; }
         string State { get; set; }
     }
 }

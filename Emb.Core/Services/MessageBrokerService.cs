@@ -37,8 +37,9 @@ namespace Emb.Core.Services
                     }
                     else
                     {
-                        var content = await dataSourceProvider.GetNewItemsAsPlainTextAsync(_configurationRoot, dataFlowInfo.Source.EndpointOptions);
-                        SaveState(dataFlowInfo.Name, content.State);
+                        var state = LoadState(dataFlowInfo.Name);
+                        var dataFetchResult = await dataSourceProvider.GetNewItemsAsPlainTextAsync(_configurationRoot, dataFlowInfo.Source.EndpointOptions, state);
+                        SaveState(dataFlowInfo.Name, dataFetchResult.State);
                         foreach (var target in dataFlowInfo.Targets)
                         {
                             var targetProvider = _pluginSet.TargetProviders.FirstOrDefault(tgp => tgp.GetType().Name == target.ProviderName);
@@ -48,11 +49,11 @@ namespace Emb.Core.Services
                             }
                             else
                             {
-                                foreach (var contentItem in content.Items)
+                                foreach (var dataFetchResultItem in dataFetchResult.Items)
                                 {
                                     try
                                     {
-                                        await targetProvider.SendAsync(_configurationRoot, target.EndpointOptions, contentItem);
+                                        await targetProvider.SendAsync(_configurationRoot, target.EndpointOptions, dataFetchResultItem);
                                     }
                                     catch (Exception e)
                                     {
@@ -70,10 +71,29 @@ namespace Emb.Core.Services
             }
         }
 
-        public void SaveState(string dataFlowName, string state)
+        private string GetStateFilePath(string dataFlowName)
         {
             var stateDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
-            File.WriteAllText(Path.Combine(stateDirectory, FilesystemUtils.CoerceValidFileName(dataFlowName + ".state")), state);
+            return Path.Combine(stateDirectory, "State", FilesystemUtils.CoerceValidFileName(dataFlowName + ".state"));
+        }
+
+        private void SaveState(string dataFlowName, string state)
+        {
+            var stateFilePath = GetStateFilePath(dataFlowName);
+
+            _logger.LogDebug($"save state {state} of {dataFlowName} to {stateFilePath}");
+
+            new FileInfo(stateFilePath).Directory?.Create();
+            File.WriteAllText(stateFilePath, state);
+        }
+
+        private string LoadState(string dataFlowName)
+        {
+            var stateFilePath = GetStateFilePath(dataFlowName);
+
+            _logger.LogDebug($"load state of {dataFlowName} from {stateFilePath}");
+
+            return File.Exists(stateFilePath) ? File.ReadAllText(stateFilePath) : string.Empty;
         }
     }
 }

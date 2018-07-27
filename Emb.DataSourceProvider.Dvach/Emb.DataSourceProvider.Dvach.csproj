@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Refit" Version="4.6.16" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Emb.Common\Emb.Common.csproj" />
   </ItemGroup>
 

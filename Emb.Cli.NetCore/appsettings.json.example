@@ -10,13 +10,15 @@
         "Targets": [
           {
             "ProviderName": "FileTargetProvider",
-            "EndpointOptions": "2ch_b_threads"
+            "EndpointOptions": "2ch_b_threads.txt"
           }
         ]
       }
     ],
     "LogLevel": "Debug",
     "LogDirectoryName": "logs"
+  },
+  "DvachDataSourceProvider": {
+    "Hostname": "2ch.hk" 
   }
-
 }
