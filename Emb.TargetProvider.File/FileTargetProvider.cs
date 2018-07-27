@@ -13,7 +13,7 @@ namespace Emb.TargetProvider.File
     {
         public async Task SendAsync(IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
         {
-            var encodedText = Encoding.Unicode.GetBytes(text + Environment.NewLine + Environment.NewLine);
+            var encodedText = Encoding.Unicode.GetBytes(text + Environment.NewLine + Environment.NewLine + "════════════════════" + Environment.NewLine);
             using (var sourceStream = new FileStream(endpointOptionsString, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
             {
                 await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
