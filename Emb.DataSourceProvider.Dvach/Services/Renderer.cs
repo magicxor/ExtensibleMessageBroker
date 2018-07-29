@@ -22,8 +22,6 @@ namespace Emb.DataSourceProvider.Dvach.Services
                 .Select(t =>
                     (new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{t.Num}.html" }).ToString()
                     + Environment.NewLine
-                    + t.Subject
-                    + Environment.NewLine
                     + StripHtml(t.Comment))
                 .ToList();
             return resultItems;
