@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Emb.Core\Emb.Core.csproj" />
+    <ProjectReference Include="..\Emb.DataSourceProvider.Dvach\Emb.DataSourceProvider.Dvach.csproj" />
+    <ProjectReference Include="..\Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj" />
+    <ProjectReference Include="..\Emb.TargetProvider.File\Emb.TargetProvider.File.csproj" />
+    <ProjectReference Include="..\Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj" />
   </ItemGroup>
 
   <ItemGroup>

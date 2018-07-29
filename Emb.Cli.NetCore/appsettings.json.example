@@ -2,15 +2,45 @@
   "EmbConfiguration": {
     "DataFlows": [
       {
-        "Name": "Task1",
+        "Name": "2ch_b_to_file",
         "Source": {
           "ProviderName": "DvachDataSourceProvider",
-          "EndpointOptions": "b"
+          "EndpointOptions": "{\"BoardId\":\"b\",\"IncludedPatterns\":[\".*SearchTerm1.*\",\".*SearchTerm2.*\"],\"ExcludedPatterns\":[]}"
         },
         "Targets": [
           {
             "ProviderName": "FileTargetProvider",
             "EndpointOptions": "2ch_b_threads.txt"
+          }
+        ]
+      },
+      {
+        "Name": "2ch_dev_to_file",
+        "Source": {
+          "ProviderName": "DvachDataSourceProvider",
+          "EndpointOptions": "{\"BoardId\":\"dev\",\"IncludedPatterns\":[\".*SearchTerm1.*\",\".*SearchTerm2.*\"],\"ExcludedPatterns\":[]}"
+        },
+        "Targets": [
+          {
+            "ProviderName": "FileTargetProvider",
+            "EndpointOptions": "2ch_dev_threads.txt"
+          }
+        ]
+      },
+      {
+        "Name": "vk_to_file_and_telegram",
+        "Source": {
+          "ProviderName": "VkFeedDataSourceProvider",
+          "EndpointOptions": "{\"MaxDaysFromNow\":30,\"IncludedPatterns\":[\".*SearchTerm1.*\",\".*SearchTerm2.*\"],\"ExcludedPatterns\":[]}"
+        },
+        "Targets": [
+          {
+            "ProviderName": "FileTargetProvider",
+            "EndpointOptions": "vk_feed.txt"
+          },
+          {
+            "ProviderName": "TelegramTargetProvider",
+            "EndpointOptions": "YOUR_TELEGRAM_CHAT_ID"
           }
         ]
       }
@@ -19,6 +49,18 @@
     "LogDirectoryName": "logs"
   },
   "DvachDataSourceProvider": {
-    "Hostname": "2ch.hk" 
+    "Hostname": "2ch.hk"
+  },
+  "VkFeedDataSourceProvider": {
+    "AccessToken": "YOUR_VK_TOKEN"
+  },
+  "TelegramTargetProvider": {
+    "Token": "YOUR_TELEGRAM_TOKEN",
+    "ProxyProtocol": "None",
+    "ProxyHost": "",
+    "ProxyPort": 0,
+    "ProxyAuthentication": false,
+    "ProxyUsername": "",
+    "ProxyPassword": ""
   }
 }

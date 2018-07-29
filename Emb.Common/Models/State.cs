@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Emb.DataSourceProvider.Dvach.Models
+namespace Emb.Common.Models
 {
-    public class DvachDataFlowState
+    public class State
     {
         public DateTime? LastRecordCreatedUtc { get; set; }
     }

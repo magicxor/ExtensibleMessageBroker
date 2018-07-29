@@ -34,7 +34,7 @@ namespace Emb.Core.Services
                 var executableLocation = Assembly.GetEntryAssembly().Location;
                 _logger.LogDebug($"executable location: {executableLocation}");
 
-                var pluginRootDirectory = Path.Combine(Path.GetDirectoryName(executableLocation) ?? throw new InvalidOperationException(), "Plugins");
+                var pluginRootDirectory = Path.GetDirectoryName(executableLocation) ?? throw new InvalidOperationException();
                 _logger.LogDebug($"plugin root directory: {executableLocation}");
 
                 var assemblies = Directory

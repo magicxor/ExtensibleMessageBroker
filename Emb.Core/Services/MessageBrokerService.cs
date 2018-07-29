@@ -13,34 +13,36 @@ namespace Emb.Core.Services
 {
     public class MessageBrokerService
     {
+        private readonly ILoggerFactory _loggerFactory;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly ILogger _logger;
         private readonly PluginSet _pluginSet;
 
-        public MessageBrokerService(ILoggerFactory loggerFactory, PluginManager pluginManager, IConfigurationRoot configurationRoot)
+        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, PluginManager pluginManager)
         {
-            _configurationRoot = configurationRoot;
+            _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<MessageBrokerService>();
+            _configurationRoot = configurationRoot;
             _pluginSet = pluginManager.LoadPlugins();
         }
 
-        public async Task RunOnceAsync(IList<DataFlowInfo> dataFlows)
+        public async Task RunOnceAsync(IList<DataFlow> dataFlows)
         {
-            foreach (var dataFlowInfo in dataFlows)
+            foreach (var dataFlow in dataFlows)
             {
                 try
                 {
-                    var dataSourceProvider = _pluginSet.DataSourceProviders.FirstOrDefault(dsp => dsp.GetType().Name == dataFlowInfo.Source.ProviderName);
+                    var dataSourceProvider = _pluginSet.DataSourceProviders.FirstOrDefault(dsp => dsp.GetType().Name == dataFlow.Source.ProviderName);
                     if (dataSourceProvider == null)
                     {
-                        _logger.LogError($"no data source provider found with name {dataFlowInfo.Source.ProviderName}.");
+                        _logger.LogError($"no data source provider found with name {dataFlow.Source.ProviderName}.");
                     }
                     else
                     {
-                        var state = LoadState(dataFlowInfo.Name);
-                        var dataFetchResult = await dataSourceProvider.GetNewItemsAsPlainTextAsync(_configurationRoot, dataFlowInfo.Source.EndpointOptions, state);
-                        SaveState(dataFlowInfo.Name, dataFetchResult.State);
-                        foreach (var target in dataFlowInfo.Targets)
+                        var stateString = LoadState(dataFlow.Name);
+                        var dataFetchResult = await dataSourceProvider.GetNewItemsAsPlainTextAsync(_loggerFactory, _configurationRoot, dataFlow.Source.EndpointOptions, stateString);
+                        SaveState(dataFlow.Name, dataFetchResult.State);
+                        foreach (var target in dataFlow.Targets)
                         {
                             var targetProvider = _pluginSet.TargetProviders.FirstOrDefault(tgp => tgp.GetType().Name == target.ProviderName);
                             if (targetProvider == null)
@@ -53,7 +55,7 @@ namespace Emb.Core.Services
                                 {
                                     try
                                     {
-                                        await targetProvider.SendAsync(_configurationRoot, target.EndpointOptions, dataFetchResultItem);
+                                        await targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, dataFetchResultItem);
                                     }
                                     catch (Exception e)
                                     {
@@ -66,7 +68,7 @@ namespace Emb.Core.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, $"error during {dataFlowInfo.Name} processing");
+                    _logger.LogError(e, $"error during {dataFlow.Name} processing");
                 }
             }
         }
@@ -77,14 +79,14 @@ namespace Emb.Core.Services
             return Path.Combine(stateDirectory, "State", FilesystemUtils.CoerceValidFileName(dataFlowName + ".state"));
         }
 
-        private void SaveState(string dataFlowName, string state)
+        private void SaveState(string dataFlowName, string stateString)
         {
             var stateFilePath = GetStateFilePath(dataFlowName);
 
-            _logger.LogDebug($"save state {state} of {dataFlowName} to {stateFilePath}");
+            _logger.LogDebug($"save state {stateString} of {dataFlowName} to {stateFilePath}");
 
             new FileInfo(stateFilePath).Directory?.Create();
-            File.WriteAllText(stateFilePath, state);
+            File.WriteAllText(stateFilePath, stateString);
         }
 
         private string LoadState(string dataFlowName)

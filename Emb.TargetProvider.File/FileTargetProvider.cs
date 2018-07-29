@@ -5,19 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Emb.TargetProvider.File
 {
     [Export(typeof(ITargetProvider))]
     public class FileTargetProvider : ITargetProvider
     {
-        public async Task SendAsync(IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
+        private async Task SaveAsync(string filePath, string text)
         {
-            var encodedText = Encoding.Unicode.GetBytes(text + Environment.NewLine + Environment.NewLine + "════════════════════" + Environment.NewLine);
-            using (var sourceStream = new FileStream(endpointOptionsString, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
+            var utf16Bytes = Encoding.Unicode.GetBytes(text + Environment.NewLine + Environment.NewLine + "════════════════════" + Environment.NewLine);
+            var utf8Bytes = Encoding.Convert(Encoding.Unicode, Encoding.UTF8, utf16Bytes);
+
+            using (var sourceStream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true))
             {
-                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+                await sourceStream.WriteAsync(utf8Bytes, 0, utf8Bytes.Length);
             }
+        }
+
+        public async Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
+        {
+            await SaveAsync(endpointOptionsString, text);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Emb.DataSourceProvider.Dvach.Models
 {
-    public class DvachDataSourceProviderSettings
+    public class ProviderSettings
     {
         public string Hostname { get; set; }
     }

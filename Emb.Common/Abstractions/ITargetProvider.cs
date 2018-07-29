@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Emb.Common.Abstractions
 {
     public interface ITargetProvider
     {
-        Task SendAsync(IConfigurationRoot configurationRoot, string options, string text);
+        Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string options, string text);
     }
 }

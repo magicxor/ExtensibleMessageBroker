@@ -5,7 +5,7 @@ namespace Emb.Core.Models
 {
     public class ApplicationSettings
     {
-        public IList<DataFlowInfo> DataFlows { get; set; }
+        public IList<DataFlow> DataFlows { get; set; }
         public LogLevel LogLevel { get; set; }
         public string LogDirectoryName { get; set; }
     }

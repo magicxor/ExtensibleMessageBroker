@@ -2,7 +2,7 @@
 using Emb.DataSourceProvider.Dvach.Models;
 using Refit;
 
-namespace Emb.DataSourceProvider.Dvach
+namespace Emb.DataSourceProvider.Dvach.Abstractions
 {
     public interface IDvachApi
     {

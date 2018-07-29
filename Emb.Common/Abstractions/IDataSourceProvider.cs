@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Emb.Common.Abstractions
 {
     public interface IDataSourceProvider
     {
-        Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString);
+        Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString);
     }
 }
