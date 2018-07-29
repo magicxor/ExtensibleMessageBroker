@@ -39,6 +39,7 @@ namespace Emb.Core.Services
 
                 var assemblies = Directory
                     .GetFiles(pluginRootDirectory, "*.dll", SearchOption.AllDirectories)
+                    .Where(f => f.Contains("Emb.TargetProvider") || f.Contains("Emb.DataSourceProvider"))
                     .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
                     .ToList();
                 _logger.LogDebug("found assemblies: " + string.Join(", ", assemblies.Select(assembly => assembly.FullName)));
