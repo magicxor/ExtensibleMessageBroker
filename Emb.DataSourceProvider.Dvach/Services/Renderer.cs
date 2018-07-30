@@ -20,7 +20,7 @@ namespace Emb.DataSourceProvider.Dvach.Services
         {
             var resultItems = threads
                 .Select(t =>
-                    (new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{t.Num}.html" }).ToString()
+                    new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{t.Num}.html" }.Uri
                     + Environment.NewLine
                     + StripHtml(t.Comment))
                 .ToList();
