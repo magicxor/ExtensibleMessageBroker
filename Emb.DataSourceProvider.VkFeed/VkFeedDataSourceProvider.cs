@@ -34,7 +34,7 @@ namespace Emb.DataSourceProvider.VkFeed
             var filteredItems = _dataExtractor.Filter(extractedItems, state, endpointOptions);
             var renderedItems = _renderer.RenderAsPlainText(filteredItems);
 
-            var lastItem = extractedItems.LastOrDefault();
+            var lastItem = extractedItems.ResponseItems.LastOrDefault();
             if (lastItem != null)
             {
                 state.LastRecordCreatedUtc = DateTimeUtils.TimestampToUtcDateTime(lastItem.Date);
