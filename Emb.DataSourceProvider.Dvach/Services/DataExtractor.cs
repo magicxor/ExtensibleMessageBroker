@@ -1,19 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AngleSharp.Extensions;
+using AngleSharp.Parser.Html;
 using Emb.Common.Models;
 using Emb.Common.Utils;
+using Emb.DataSourceProvider.Dvach.Formatting;
 using Emb.DataSourceProvider.Dvach.Models;
 
 namespace Emb.DataSourceProvider.Dvach.Services
 {
     public class DataExtractor
     {
+        private string StripHtml(string input)
+        {
+            var dom = new HtmlParser().Parse(input);
+            return dom.DocumentElement.ToHtml(new PlainTextMarkupFormatter());
+        }
+
         public List<Thread> Extract(DvachBoard dvachBoard)
         {
-            return dvachBoard.Threads
+            var threads = dvachBoard.Threads
                 .OrderBy(t => t.Timestamp)
                 .ToList();
+            threads.ForEach(t => t.Comment = StripHtml(t.Comment));
+            return threads;
         }
 
         public List<Thread> Filter(List<Thread> extractedItems, State state, EndpointOptions endpointOptions)
