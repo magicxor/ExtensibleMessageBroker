@@ -52,17 +52,7 @@ namespace Emb.DataSourceProvider.VkFeed.Services
             {
                 apiResult = await GetVkFeedAsync(api, providerSettings.AccessToken, startFrom);
                 logger.LogDebug($"{nameof(GetVkFeedAsync)} result: {apiResult.Response.Items.Count} items, NextFrom = {apiResult.Response.NextFrom}");
-                var nextStartFrom = apiResult.Response.NextFrom;
-
-                // workaround:
-                if (string.IsNullOrWhiteSpace(nextStartFrom))
-                {
-                    apiResult = await GetVkFeedAsync(api, providerSettings.AccessToken, startFrom);
-                    logger.LogDebug($"[workaround: retry] {nameof(GetVkFeedAsync)} result: {apiResult.Response.Items.Count} items, NextFrom = {apiResult.Response.NextFrom}");
-                }
                 startFrom = apiResult.Response.NextFrom;
-                // end of workaround
-
                 extractedProfiles.AddRange(apiResult.Response.Profiles);
                 extractedItems.AddRange(apiResult.Response.Items);
             } while (!string.IsNullOrWhiteSpace(startFrom)
