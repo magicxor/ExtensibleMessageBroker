@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Emb.DataSourceProvider.Dvach.Models;
+using Emb.DataSourceProvider.DvachThread.Dto;
 using Refit;
 
-namespace Emb.DataSourceProvider.Dvach.Abstractions
+namespace Emb.DataSourceProvider.DvachThread.Abstractions
 {
     public interface IDvachApi
     {

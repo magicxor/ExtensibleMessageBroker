@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Emb.DataSourceProvider.DvachPost.Dto.BoardDto;
 using Newtonsoft.Json;
 
-namespace Emb.DataSourceProvider.Dvach.Models
+namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
 {
-    public class DvachBoard
+    public class DvachBoardDto
     {
         [JsonProperty("Board")]
         public string Board { get; set; }

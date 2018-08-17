@@ -2,7 +2,7 @@
 using AngleSharp;
 using AngleSharp.Dom;
 
-namespace Emb.DataSourceProvider.Dvach.Formatting
+namespace Emb.DataSourceProvider.DvachPost.Services
 {
     public class PlainTextMarkupFormatter : IMarkupFormatter
     {

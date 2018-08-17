@@ -5,10 +5,10 @@ using AngleSharp.Extensions;
 using AngleSharp.Parser.Html;
 using Emb.Common.Models;
 using Emb.Common.Utils;
-using Emb.DataSourceProvider.Dvach.Formatting;
-using Emb.DataSourceProvider.Dvach.Models;
+using Emb.DataSourceProvider.DvachThread.Dto;
+using Emb.DataSourceProvider.DvachThread.Models;
 
-namespace Emb.DataSourceProvider.Dvach.Services
+namespace Emb.DataSourceProvider.DvachThread.Services
 {
     public class DataExtractor
     {

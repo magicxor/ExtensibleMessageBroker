@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Emb.DataSourceProvider.Dvach.Models
+namespace Emb.DataSourceProvider.DvachThread.Models
 {
     public class EndpointOptions
     {

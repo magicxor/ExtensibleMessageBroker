@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Emb.DataSourceProvider.Dvach.Models
+namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 {
-    public class Thread
+    public class Post
     {
         [JsonProperty("banned")]
         public long Banned { get; set; }
@@ -26,9 +26,6 @@ namespace Emb.DataSourceProvider.Dvach.Models
         [JsonProperty("files")]
         public List<File> Files { get; set; }
 
-        [JsonProperty("files_count")]
-        public long FilesCount { get; set; }
-
         [JsonProperty("lasthit")]
         public long Lasthit { get; set; }
 
@@ -36,7 +33,10 @@ namespace Emb.DataSourceProvider.Dvach.Models
         public string Name { get; set; }
 
         [JsonProperty("num")]
-        public string Num { get; set; }
+        public long Num { get; set; }
+
+        [JsonProperty("number")]
+        public long Number { get; set; }
 
         [JsonProperty("op")]
         public long Op { get; set; }
@@ -44,16 +44,13 @@ namespace Emb.DataSourceProvider.Dvach.Models
         [JsonProperty("parent")]
         public string Parent { get; set; }
 
-        [JsonProperty("posts_count")]
-        public long PostsCount { get; set; }
-
         [JsonProperty("sticky")]
         public long Sticky { get; set; }
 
         [JsonProperty("subject")]
         public string Subject { get; set; }
 
-        [JsonProperty("tags")]
+        [JsonProperty("tags", NullValueHandling = NullValueHandling.Ignore)]
         public string Tags { get; set; }
 
         [JsonProperty("timestamp")]

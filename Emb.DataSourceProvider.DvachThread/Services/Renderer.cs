@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Emb.DataSourceProvider.Dvach.Models;
+using Emb.DataSourceProvider.DvachThread.Dto;
+using Emb.DataSourceProvider.DvachThread.Models;
 
-namespace Emb.DataSourceProvider.Dvach.Services
+namespace Emb.DataSourceProvider.DvachThread.Services
 {
     public class Renderer
     {

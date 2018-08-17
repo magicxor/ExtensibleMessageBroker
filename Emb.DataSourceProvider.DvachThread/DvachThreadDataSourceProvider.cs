@@ -5,25 +5,25 @@ using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Emb.Common.Models;
 using Emb.Common.Utils;
-using Emb.DataSourceProvider.Dvach.Abstractions;
-using Emb.DataSourceProvider.Dvach.Models;
-using Emb.DataSourceProvider.Dvach.Services;
+using Emb.DataSourceProvider.DvachThread.Abstractions;
+using Emb.DataSourceProvider.DvachThread.Models;
+using Emb.DataSourceProvider.DvachThread.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Refit;
 
-namespace Emb.DataSourceProvider.Dvach
+namespace Emb.DataSourceProvider.DvachThread
 {
     [Export(typeof(IDataSourceProvider))]
-    public class DvachDataSourceProvider : IDataSourceProvider
+    public class DvachThreadDataSourceProvider : IDataSourceProvider
     {
         private readonly Renderer _renderer = new Renderer();
         private readonly DataExtractor _dataExtractor = new DataExtractor();
 
         public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString)
         {
-            var logger = loggerFactory.CreateLogger<DvachDataSourceProvider>();
+            var logger = loggerFactory.CreateLogger<DvachThreadDataSourceProvider>();
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
             var endpointOptions = JsonConvert.DeserializeObject<EndpointOptions>(endpointOptionsString);
             var state = JsonConvert.DeserializeObject<State>(stateString) ?? new State();

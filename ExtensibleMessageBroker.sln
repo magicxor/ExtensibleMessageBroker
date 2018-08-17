@@ -7,15 +7,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.Common", "Emb.Common\Em
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.Core", "Emb.Core\Emb.Core.csproj", "{D0DDE7B2-2A2D-44B0-A41A-610F946DDDE7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.Dvach", "Emb.DataSourceProvider.Dvach\Emb.DataSourceProvider.Dvach.csproj", "{E0FAE280-A3B2-4FD0-A4B5-185686612D23}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.TargetProvider.File", "Emb.TargetProvider.File\Emb.TargetProvider.File.csproj", "{90AF113A-6D8C-42E0-80D7-C1167D430A03}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.Cli.NetCore", "Emb.Cli.NetCore\Emb.Cli.NetCore.csproj", "{93B06C35-39CB-40D1-8076-56648D8F22B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.TargetProvider.Telegram", "Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj", "{920797B8-E177-42D0-A689-871E5F9D5766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.TargetProvider.Telegram", "Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj", "{920797B8-E177-42D0-A689-871E5F9D5766}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.DataSourceProvider.VkFeed", "Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj", "{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.VkFeed", "Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj", "{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.DataSourceProvider.DvachPost", "Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj", "{4995A645-58AD-475A-A3A8-BE3236611E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.DataSourceProvider.DvachThread", "Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj", "{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +33,6 @@ Global
 		{D0DDE7B2-2A2D-44B0-A41A-610F946DDDE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0DDE7B2-2A2D-44B0-A41A-610F946DDDE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0DDE7B2-2A2D-44B0-A41A-610F946DDDE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0FAE280-A3B2-4FD0-A4B5-185686612D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0FAE280-A3B2-4FD0-A4B5-185686612D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0FAE280-A3B2-4FD0-A4B5-185686612D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0FAE280-A3B2-4FD0-A4B5-185686612D23}.Release|Any CPU.Build.0 = Release|Any CPU
 		{90AF113A-6D8C-42E0-80D7-C1167D430A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{90AF113A-6D8C-42E0-80D7-C1167D430A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90AF113A-6D8C-42E0-80D7-C1167D430A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +49,14 @@ Global
 		{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4995A645-58AD-475A-A3A8-BE3236611E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4995A645-58AD-475A-A3A8-BE3236611E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4995A645-58AD-475A-A3A8-BE3236611E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4995A645-58AD-475A-A3A8-BE3236611E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

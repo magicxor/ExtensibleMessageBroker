@@ -1,4 +1,4 @@
-﻿namespace Emb.DataSourceProvider.Dvach.Models
+﻿namespace Emb.DataSourceProvider.DvachThread.Models
 {
     public class ProviderSettings
     {

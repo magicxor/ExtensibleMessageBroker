@@ -4,7 +4,7 @@
       {
         "Name": "2ch_b_to_file",
         "Source": {
-          "ProviderName": "DvachDataSourceProvider",
+          "ProviderName": "DvachThreadDataSourceProvider",
           "EndpointOptions": "{\"BoardId\":\"b\",\"IncludedPatterns\":[\".*SearchTerm1.*\",\".*SearchTerm2.*\"],\"ExcludedPatterns\":[]}"
         },
         "Targets": [
@@ -17,7 +17,7 @@
       {
         "Name": "2ch_dev_to_file",
         "Source": {
-          "ProviderName": "DvachDataSourceProvider",
+          "ProviderName": "DvachThreadDataSourceProvider",
           "EndpointOptions": "{\"BoardId\":\"dev\",\"IncludedPatterns\":[\".*SearchTerm1.*\",\".*SearchTerm2.*\"],\"ExcludedPatterns\":[]}"
         },
         "Targets": [
@@ -48,7 +48,10 @@
     "LogLevel": "Debug",
     "LogDirectoryName": "logs"
   },
-  "DvachDataSourceProvider": {
+  "DvachPostDataSourceProvider": {
+    "Hostname": "2ch.hk"
+  },
+  "DvachThreadDataSourceProvider": {
     "Hostname": "2ch.hk"
   },
   "VkFeedDataSourceProvider": {

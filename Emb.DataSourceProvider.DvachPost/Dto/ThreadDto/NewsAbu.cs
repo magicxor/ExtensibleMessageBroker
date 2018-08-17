@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Emb.DataSourceProvider.Dvach.Models
+namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 {
     public class NewsAbu
     {
