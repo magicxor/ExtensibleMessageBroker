@@ -56,6 +56,7 @@ namespace Emb.DataSourceProvider.DvachPost.Services
                             new List<Dto.ThreadDto.Post>();
                 result.AddRange(posts);
             }
+            result.ForEach(p => p.Comment = StripHtml(p.Comment));
             return result.OrderBy(p => p.Timestamp).ToList();
         }
 
