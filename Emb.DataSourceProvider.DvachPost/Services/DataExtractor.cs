@@ -8,11 +8,19 @@ using Emb.Common.Models;
 using Emb.Common.Utils;
 using Emb.DataSourceProvider.DvachPost.Abstractions;
 using Emb.DataSourceProvider.DvachPost.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Emb.DataSourceProvider.DvachPost.Services
 {
     public class DataExtractor
     {
+        private readonly ILogger _logger;
+
+        public DataExtractor(ILoggerFactory loggerFactory)
+        {
+            _logger = loggerFactory.CreateLogger<DvachPostDataSourceProvider>();
+        }
+
         private string StripHtml(string input)
         {
             var dom = new HtmlParser().Parse(input);
@@ -31,8 +39,8 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             return extractedItems
                 .Where(ri =>
                     (endpointOptions.ThreadIsSticky == null || (endpointOptions.ThreadIsSticky.Value == false && ri.Sticky == 0) || (endpointOptions.ThreadIsSticky.Value == true && ri.Sticky > 0))
-                    && (endpointOptions.ThreadSubjectIncludedPatterns == null || !endpointOptions.ThreadSubjectIncludedPatterns.Any() || endpointOptions.ThreadSubjectIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.ThreadSubjectExcludedPatterns == null || !endpointOptions.ThreadSubjectExcludedPatterns.Any() || !endpointOptions.ThreadSubjectExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase)))
+                    && (endpointOptions.ThreadSubjectIncludedPatterns == null || !endpointOptions.ThreadSubjectIncludedPatterns.Any() || endpointOptions.ThreadSubjectIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase)))
+                    && (endpointOptions.ThreadSubjectExcludedPatterns == null || !endpointOptions.ThreadSubjectExcludedPatterns.Any() || !endpointOptions.ThreadSubjectExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase)))
                     && (endpointOptions.ThreadCommentIncludedPatterns == null || !endpointOptions.ThreadCommentIncludedPatterns.Any() || endpointOptions.ThreadCommentIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase)))
                     && (endpointOptions.ThreadCommentExcludedPatterns == null || !endpointOptions.ThreadCommentExcludedPatterns.Any() || !endpointOptions.ThreadCommentExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase))))
                 .ToList();
@@ -54,9 +62,16 @@ namespace Emb.DataSourceProvider.DvachPost.Services
         public async Task<List<Dto.ThreadDto.Post>> ExtractAsync(IDvachApi api, State state, EndpointOptions endpointOptions)
         {
             var dvachBoard = await api.GetBoard(endpointOptions.BoardId);
+
             var extractedThreads = ExtractThreads(dvachBoard);
+            _logger.LogInformation($"{extractedThreads.Count} threads total in {endpointOptions.BoardId}");
+
             var filteredThreads = FilterThreads(extractedThreads, state, endpointOptions);
+            _logger.LogInformation($"{filteredThreads.Count} relevant threads in {endpointOptions.BoardId}");
+
             var extractedPosts = await ExtractPostsAsync(api, endpointOptions, filteredThreads.Select(p => p.Num).ToList());
+            _logger.LogInformation($"{extractedPosts.Count} posts extracted from {endpointOptions.BoardId} threads");
+
             return extractedPosts;
         }
 
