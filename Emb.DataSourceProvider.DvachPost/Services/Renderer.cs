@@ -12,7 +12,7 @@ namespace Emb.DataSourceProvider.DvachPost.Services
         {
             var resultItems = posts
                 .Select(p =>
-                    new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{p.Parent}.html" }.Uri
+                    new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{p.Parent}.html#{p.Num}" }.Uri
                     + Environment.NewLine
                     + p.Comment)
                 .ToList();
