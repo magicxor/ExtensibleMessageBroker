@@ -45,7 +45,6 @@ namespace Emb.TargetProvider.Telegram
                     {
                         httpToSocks5Proxy = new HttpToSocks5Proxy(providerSettings.ProxyHost, providerSettings.ProxyPort);
                     }
-                    httpToSocks5Proxy.ResolveHostnamesLocally = true;
                     webProxy = httpToSocks5Proxy;
                     break;
                 default:
