@@ -78,8 +78,8 @@ namespace Emb.DataSourceProvider.VkFeed.Services
                     (ri.MarkedAsAds == null || ri.MarkedAsAds == 0)
                     && !string.IsNullOrEmpty(ri.Text)
                     && (endpointOptions.IsFemale == null || ri.SignerId == null || vkNewsfeedResult.Profiles.All(p => p.Id != ri.SignerId) || CheckSexProperty(vkNewsfeedResult.Profiles.First(p => p.Id == ri.SignerId), endpointOptions.IsFemale.Value))
-                    && (endpointOptions.IncludedPatterns == null || !endpointOptions.IncludedPatterns.Any() || endpointOptions.IncludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.ExcludedPatterns == null || !endpointOptions.ExcludedPatterns.Any() || !endpointOptions.ExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase))));
+                    && (endpointOptions.IncludedPatterns == null || !endpointOptions.IncludedPatterns.Any() || endpointOptions.IncludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
+                    && (endpointOptions.ExcludedPatterns == null || !endpointOptions.ExcludedPatterns.Any() || !endpointOptions.ExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))));
             return filteredItems
                 .ToList();
         }
