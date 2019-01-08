@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using Emb.Configurator.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -8,69 +9,125 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
+using PropertyChanged;
 
 namespace Emb.Configurator.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    [AddINotifyPropertyChangedInterface]
+    public class MainViewModel
     {
-        public RelayCommand GenerateSchemaCommand { get; set; }
-        public RelayCommand ValidateCommand { get; set; }
+        private readonly WindowService _windowService;
+
+        public RelayCommand<MainWindow> GenerateSchemaCommand { get; set; }
+        public RelayCommand<MainWindow> ValidateCommand { get; set; }
         public RelayCommand EscapeCommand { get; set; }
         public RelayCommand UnescapeCommand { get; set; }
 
         public string Class { get; set; }
         public string Schema { get; set; }
         public string Json { get; set; }
-
+        
         private const string ClassRegex = @"(?s)class\s+(\w+).*?{";
         
-        public MainViewModel()
+        public MainViewModel(WindowService windowService)
         {
-            GenerateSchemaCommand = new RelayCommand(GenerateSchema);
-            ValidateCommand = new RelayCommand(Validate);
+            _windowService = windowService;
+
+            GenerateSchemaCommand = new RelayCommand<MainWindow>(GenerateSchema);
+            ValidateCommand = new RelayCommand<MainWindow>(Validate);
             EscapeCommand = new RelayCommand(Escape);
             UnescapeCommand = new RelayCommand(Unescape);
         }
 
-        private async void GenerateSchema()
+        private async void GenerateSchema(MainWindow mainWindow)
         {
+            void ShowError()
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Class not found",
+                    MessageText = "Please provide a valid C# class",
+                    ButtonText = "OK",
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(Class))
+            {
+                ShowError();
+                return;
+            }
+
             var matches = Regex.Matches(Class, ClassRegex, RegexOptions.Multiline);
             if (matches.Count == 1)
             {
                 var firstMatch = matches[0];
-                if (firstMatch.Groups.Count == 2)
+                if (firstMatch.Groups.Count >= 2)
                 {
                     var className = firstMatch.Groups[1];
                     var classType = await CSharpScript.EvaluateAsync<Type>(Class + $" return typeof({className});", 
                         ScriptOptions.Default
-                            .WithImports("System.IO")
-                            .WithImports("System.Collections.Generic"));
+                            .WithReferences(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly)
+                            .WithImports("System.Collections.Generic", "System.ComponentModel.DataAnnotations")
+                        );
                     var generator = new JSchemaGenerator();
                     var schema = generator.Generate(classType);
                     Schema = schema.ToString();
                 }
                 else
                 {
-                    // todo: throw
+                    ShowError();
                 }
             }
             else
             {
-                // todo: throw
+                ShowError();
             }
         }
 
-        private void Validate()
+        private void Validate(MainWindow mainWindow)
         {
-            var schema = JSchema.Parse(Schema);
-            var json = JObject.Parse(Json);
-            if (json.IsValid(schema))
+            if (string.IsNullOrWhiteSpace(Schema) || string.IsNullOrWhiteSpace(Json))
             {
-                // todo: ok
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "JSON schema and JSON are required",
+                    MessageText = "Please provide JSON schema and JSON",
+                    ButtonText = "OK",
+                });
+                return;
             }
-            else
+
+            try
             {
-                // todo: failed
+                var schema = JSchema.Parse(Schema);
+                var json = JObject.Parse(Json);
+                if (json.IsValid(schema))
+                {
+                    _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                    {
+                        Title = "JSON is valid",
+                        MessageText = "JSON is valid",
+                        ButtonText = "OK",
+                    });
+                }
+                else
+                {
+                    _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                    {
+                        Title = "JSON is invalid",
+                        MessageText = "JSON is invalid",
+                        ButtonText = "OK",
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
             }
         }
 

@@ -1,5 +1,5 @@
-﻿using System.Windows;
-using Emb.Configurator.ViewModel;
+﻿using Emb.Configurator.ViewModel;
+using System.Windows;
 
 namespace Emb.Configurator
 {
