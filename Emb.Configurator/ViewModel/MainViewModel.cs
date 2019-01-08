@@ -1,7 +1,4 @@
-using System;
-using System.Text.RegularExpressions;
 using Emb.Configurator.Services;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
@@ -10,6 +7,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using PropertyChanged;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Emb.Configurator.ViewModel
 {
@@ -20,23 +19,23 @@ namespace Emb.Configurator.ViewModel
 
         public RelayCommand<MainWindow> GenerateSchemaCommand { get; set; }
         public RelayCommand<MainWindow> ValidateCommand { get; set; }
-        public RelayCommand EscapeCommand { get; set; }
-        public RelayCommand UnescapeCommand { get; set; }
+        public RelayCommand<MainWindow> EscapeCommand { get; set; }
+        public RelayCommand<MainWindow> UnescapeCommand { get; set; }
 
         public string Class { get; set; }
         public string Schema { get; set; }
         public string Json { get; set; }
-        
+
         private const string ClassRegex = @"(?s)class\s+(\w+).*?{";
-        
+
         public MainViewModel(WindowService windowService)
         {
             _windowService = windowService;
 
             GenerateSchemaCommand = new RelayCommand<MainWindow>(GenerateSchema);
             ValidateCommand = new RelayCommand<MainWindow>(Validate);
-            EscapeCommand = new RelayCommand(Escape);
-            UnescapeCommand = new RelayCommand(Unescape);
+            EscapeCommand = new RelayCommand<MainWindow>(Escape);
+            UnescapeCommand = new RelayCommand<MainWindow>(Unescape);
         }
 
         private async void GenerateSchema(MainWindow mainWindow)
@@ -64,7 +63,7 @@ namespace Emb.Configurator.ViewModel
                 if (firstMatch.Groups.Count >= 2)
                 {
                     var className = firstMatch.Groups[1];
-                    var classType = await CSharpScript.EvaluateAsync<Type>(Class + $" return typeof({className});", 
+                    var classType = await CSharpScript.EvaluateAsync<Type>(Class + $" return typeof({className});",
                         ScriptOptions.Default
                             .WithReferences(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly)
                             .WithImports("System.Collections.Generic", "System.ComponentModel.DataAnnotations")
@@ -131,16 +130,44 @@ namespace Emb.Configurator.ViewModel
             }
         }
 
-        private void Escape()
+        private void Escape(MainWindow mainWindow)
         {
-            var value = JsonConvert.ToString(Json);
-            Json = value;
+            try
+            {
+                var jObject = JObject.Parse(Json);
+                var singleLineJson = jObject.ToString(Formatting.None);
+                var escapedSingleLineJson = JsonConvert.ToString(singleLineJson);
+                Json = escapedSingleLineJson;
+            }
+            catch (Exception e)
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
+            }
         }
 
-        private void Unescape()
+        private void Unescape(MainWindow mainWindow)
         {
-            var value = JsonConvert.DeserializeObject<string>(Json);
-            Json = value;
+            try
+            {
+                var unescapedSingleLineJson = JsonConvert.DeserializeObject<string>(Json);
+                var jObject = JObject.Parse(unescapedSingleLineJson);
+                var intendedJson = jObject.ToString(Formatting.Indented);
+                Json = intendedJson;
+            }
+            catch (Exception e)
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
+            }
         }
     }
 }
