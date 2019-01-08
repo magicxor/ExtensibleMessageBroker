@@ -46,5 +46,15 @@ namespace Emb.DataSourceProvider.DvachPost
             };
             return result;
         }
+
+        public Type GetEndpointOptionsType()
+        {
+            return typeof(EndpointOptions);
+        }
+
+        public Type GetProviderSettingsType()
+        {
+            return typeof(ProviderSettings);
+        }
     }
 }

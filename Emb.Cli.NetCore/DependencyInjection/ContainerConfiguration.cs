@@ -7,6 +7,7 @@ using Emb.Core.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Schema.Generation;
 
 namespace Emb.Cli.NetCore.DependencyInjection
 {
@@ -29,6 +30,7 @@ namespace Emb.Cli.NetCore.DependencyInjection
                 .AddSingleton<IConfigurationRoot>(configurationRoot)
                 .AddSingleton<ApplicationSettings>(applicationSettings)
                 .AddScoped<ILoggerFactory>(c => CreateLoggerFactory(applicationSettings))
+                .AddScoped<JSchemaGenerator>()
                 .AddScoped<PluginManager>()
                 .AddScoped<MessageBrokerService>();
         }

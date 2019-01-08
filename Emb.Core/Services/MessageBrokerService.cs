@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Emb.Common.Utils;
+using Emb.Core.Constants;
 using Emb.Core.Models;
-using Emb.Core.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Schema.Generation;
 
 namespace Emb.Core.Services
 {
@@ -17,17 +19,66 @@ namespace Emb.Core.Services
         private readonly IConfigurationRoot _configurationRoot;
         private readonly ILogger _logger;
         private readonly PluginSet _pluginSet;
+        private readonly JSchemaGenerator _schemaGenerator;
 
-        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, PluginManager pluginManager)
+        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, PluginManager pluginManager, JSchemaGenerator schemaGenerator)
         {
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<MessageBrokerService>();
             _configurationRoot = configurationRoot;
             _pluginSet = pluginManager.LoadPlugins();
+            _schemaGenerator = schemaGenerator;
+        }
+
+        public void GenerateJsonSchema(string basePath, string providerName, string modelName, Type modelType)
+        {
+            if (modelType != null)
+            {
+                _logger.LogTrace($"start json schema generation for {providerName}.{modelName} ({nameof(modelType)}: {modelType.Name})");
+
+                var schema = _schemaGenerator.Generate(modelType);
+                var schemaFilePath = Path.Combine(basePath, $"{providerName}_{modelName}.schema.json");
+                var schemaString = schema.ToString();
+                File.WriteAllText(schemaFilePath, schemaString);
+
+                _logger.LogTrace($"schema generation was successful: {schemaFilePath}");
+            }
+            else
+            {
+                _logger.LogTrace($"skip json schema generation for {providerName}.{modelName} because {nameof(modelType)} is null");
+            }
+        }
+
+        public void GenerateJsonSchemas(string basePath)
+        {
+            _logger.LogInformation($"running {nameof(GenerateJsonSchemas)}...");
+
+            foreach (var dataSourceProvider in _pluginSet.DataSourceProviders)
+            {
+                var providerName = dataSourceProvider.GetType().Name;
+
+                var endpointOptionsType = dataSourceProvider.GetEndpointOptionsType();
+                GenerateJsonSchema(basePath, providerName, Defaults.EndpointOptionsModelName, endpointOptionsType);
+
+                var providerSettingsType = dataSourceProvider.GetProviderSettingsType();
+                GenerateJsonSchema(basePath, providerName, Defaults.ProviderSettingsModelName, providerSettingsType);
+            }
+            foreach (var targetProvider in _pluginSet.TargetProviders)
+            {
+                var providerName = targetProvider.GetType().Name;
+
+                var endpointOptionsType = targetProvider.GetEndpointOptionsType();
+                GenerateJsonSchema(basePath, providerName, Defaults.EndpointOptionsModelName, endpointOptionsType);
+
+                var providerSettingsType = targetProvider.GetProviderSettingsType();
+                GenerateJsonSchema(basePath, providerName, Defaults.ProviderSettingsModelName, providerSettingsType);
+            }
         }
 
         public async Task RunOnceAsync(IList<DataFlow> dataFlows)
         {
+            _logger.LogInformation($"running {nameof(RunOnceAsync)}...");
+
             foreach (var dataFlow in dataFlows)
             {
                 try

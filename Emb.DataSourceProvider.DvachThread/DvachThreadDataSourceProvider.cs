@@ -50,5 +50,15 @@ namespace Emb.DataSourceProvider.DvachThread
             };
             return result;
         }
+
+        public Type GetEndpointOptionsType()
+        {
+            return typeof(EndpointOptions);
+        }
+
+        public Type GetProviderSettingsType()
+        {
+            return typeof(ProviderSettings);
+        }
     }
 }

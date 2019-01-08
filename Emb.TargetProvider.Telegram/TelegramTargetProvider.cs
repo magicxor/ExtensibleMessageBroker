@@ -77,5 +77,15 @@ namespace Emb.TargetProvider.Telegram
 
             await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text);
         }
+
+        public Type GetEndpointOptionsType()
+        {
+            return typeof(string);
+        }
+
+        public Type GetProviderSettingsType()
+        {
+            return typeof(ProviderSettings);
+        }
     }
 }

@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AngleSharp" Version="0.9.10" />
-    <PackageReference Include="Refit" Version="4.6.30" />
+    <PackageReference Include="AngleSharp" Version="0.9.11" />
+    <PackageReference Include="Refit" Version="4.6.58" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
