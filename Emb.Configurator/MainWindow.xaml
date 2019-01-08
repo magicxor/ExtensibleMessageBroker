@@ -15,10 +15,14 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Row="0" Grid.Column="0" Margin="4" FontSize="14" Command="{Binding ValidateCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Validate</Button>
-                <Button Grid.Row="0" Grid.Column="1" Margin="4" FontSize="14" Command="{Binding EscapeCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Escape</Button>
-                <Button Grid.Row="0" Grid.Column="2" Margin="4" FontSize="14" Command="{Binding UnescapeCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Unescape</Button>
+                <Button Grid.Row="0" Grid.Column="1" Margin="4" FontSize="14" Command="{Binding EscapeJsonCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Escape JSON</Button>
+                <Button Grid.Row="0" Grid.Column="2" Margin="4" FontSize="14" Command="{Binding UnescapeJsonCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Unescape JSON</Button>
+                <Button Grid.Row="0" Grid.Column="3" Margin="4" FontSize="14" Command="{Binding EscapeStringCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Escape string</Button>
+                <Button Grid.Row="0" Grid.Column="4" Margin="4" FontSize="14" Command="{Binding UnescapeStringCommand}" CommandParameter="{Binding ElementName=MainWindowInstance}">Unescape string</Button>
             </Grid>
             <Grid>
                 <Grid.RowDefinitions>

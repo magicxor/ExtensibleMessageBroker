@@ -19,8 +19,10 @@ namespace Emb.Configurator.ViewModel
 
         public RelayCommand<MainWindow> GenerateSchemaCommand { get; set; }
         public RelayCommand<MainWindow> ValidateCommand { get; set; }
-        public RelayCommand<MainWindow> EscapeCommand { get; set; }
-        public RelayCommand<MainWindow> UnescapeCommand { get; set; }
+        public RelayCommand<MainWindow> EscapeJsonCommand { get; set; }
+        public RelayCommand<MainWindow> UnescapeJsonCommand { get; set; }
+        public RelayCommand<MainWindow> EscapeStringCommand { get; set; }
+        public RelayCommand<MainWindow> UnescapeStringCommand { get; set; }
 
         public string Class { get; set; }
         public string Schema { get; set; }
@@ -34,8 +36,10 @@ namespace Emb.Configurator.ViewModel
 
             GenerateSchemaCommand = new RelayCommand<MainWindow>(GenerateSchema);
             ValidateCommand = new RelayCommand<MainWindow>(Validate);
-            EscapeCommand = new RelayCommand<MainWindow>(Escape);
-            UnescapeCommand = new RelayCommand<MainWindow>(Unescape);
+            EscapeJsonCommand = new RelayCommand<MainWindow>(EscapeJson);
+            UnescapeJsonCommand = new RelayCommand<MainWindow>(UnescapeJson);
+            EscapeStringCommand = new RelayCommand<MainWindow>(EscapeString);
+            UnescapeStringCommand = new RelayCommand<MainWindow>(UnescapeString);
         }
 
         private async void GenerateSchema(MainWindow mainWindow)
@@ -50,36 +54,48 @@ namespace Emb.Configurator.ViewModel
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(Class))
+            try
             {
-                ShowError();
-                return;
-            }
-
-            var matches = Regex.Matches(Class, ClassRegex, RegexOptions.Multiline);
-            if (matches.Count == 1)
-            {
-                var firstMatch = matches[0];
-                if (firstMatch.Groups.Count >= 2)
+                if (string.IsNullOrWhiteSpace(Class))
                 {
-                    var className = firstMatch.Groups[1];
-                    var classType = await CSharpScript.EvaluateAsync<Type>(Class + $" return typeof({className});",
-                        ScriptOptions.Default
-                            .WithReferences(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly)
-                            .WithImports("System.Collections.Generic", "System.ComponentModel.DataAnnotations")
+                    ShowError();
+                    return;
+                }
+
+                var matches = Regex.Matches(Class, ClassRegex, RegexOptions.Multiline);
+                if (matches.Count == 1)
+                {
+                    var firstMatch = matches[0];
+                    if (firstMatch.Groups.Count >= 2)
+                    {
+                        var className = firstMatch.Groups[1];
+                        var classType = await CSharpScript.EvaluateAsync<Type>(Class + $" return typeof({className});",
+                            ScriptOptions.Default
+                                .WithReferences(typeof(System.ComponentModel.DataAnnotations.RequiredAttribute).Assembly)
+                                .WithImports("System.Collections.Generic", "System.ComponentModel.DataAnnotations")
                         );
-                    var generator = new JSchemaGenerator();
-                    var schema = generator.Generate(classType);
-                    Schema = schema.ToString();
+                        var generator = new JSchemaGenerator();
+                        var schema = generator.Generate(classType);
+                        Schema = schema.ToString();
+                    }
+                    else
+                    {
+                        ShowError();
+                    }
                 }
                 else
                 {
                     ShowError();
                 }
             }
-            else
+            catch (Exception e)
             {
-                ShowError();
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
             }
         }
 
@@ -130,7 +146,7 @@ namespace Emb.Configurator.ViewModel
             }
         }
 
-        private void Escape(MainWindow mainWindow)
+        private void EscapeJson(MainWindow mainWindow)
         {
             try
             {
@@ -150,7 +166,7 @@ namespace Emb.Configurator.ViewModel
             }
         }
 
-        private void Unescape(MainWindow mainWindow)
+        private void UnescapeJson(MainWindow mainWindow)
         {
             try
             {
@@ -158,6 +174,40 @@ namespace Emb.Configurator.ViewModel
                 var jObject = JObject.Parse(unescapedSingleLineJson);
                 var intendedJson = jObject.ToString(Formatting.Indented);
                 Json = intendedJson;
+            }
+            catch (Exception e)
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
+            }
+        }
+
+        private void EscapeString(MainWindow mainWindow)
+        {
+            try
+            {
+                Json = JsonConvert.ToString(Json);
+            }
+            catch (Exception e)
+            {
+                _windowService.ShowDialogWindow(mainWindow, new DialogViewModel()
+                {
+                    Title = "Error",
+                    MessageText = e.ToString(),
+                    ButtonText = "OK",
+                });
+            }
+        }
+
+        private void UnescapeString(MainWindow mainWindow)
+        {
+            try
+            {
+                Json = JsonConvert.DeserializeObject<string>(Json);
             }
             catch (Exception e)
             {
