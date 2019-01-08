@@ -39,10 +39,10 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             return extractedItems
                 .Where(ri =>
                     (endpointOptions.ThreadIsSticky == null || (endpointOptions.ThreadIsSticky.Value == false && ri.Sticky == 0) || (endpointOptions.ThreadIsSticky.Value == true && ri.Sticky > 0))
-                    && (endpointOptions.ThreadSubjectIncludedPatterns == null || !endpointOptions.ThreadSubjectIncludedPatterns.Any() || endpointOptions.ThreadSubjectIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.ThreadSubjectExcludedPatterns == null || !endpointOptions.ThreadSubjectExcludedPatterns.Any() || !endpointOptions.ThreadSubjectExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.ThreadCommentIncludedPatterns == null || !endpointOptions.ThreadCommentIncludedPatterns.Any() || endpointOptions.ThreadCommentIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.ThreadCommentExcludedPatterns == null || !endpointOptions.ThreadCommentExcludedPatterns.Any() || !endpointOptions.ThreadCommentExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase))))
+                    && (endpointOptions.ThreadSubjectIncludedPatterns == null || !endpointOptions.ThreadSubjectIncludedPatterns.Any() || endpointOptions.ThreadSubjectIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
+                    && (endpointOptions.ThreadSubjectExcludedPatterns == null || !endpointOptions.ThreadSubjectExcludedPatterns.Any() || !endpointOptions.ThreadSubjectExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Subject, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
+                    && (endpointOptions.ThreadCommentIncludedPatterns == null || !endpointOptions.ThreadCommentIncludedPatterns.Any() || endpointOptions.ThreadCommentIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
+                    && (endpointOptions.ThreadCommentExcludedPatterns == null || !endpointOptions.ThreadCommentExcludedPatterns.Any() || !endpointOptions.ThreadCommentExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))))
                 .ToList();
         }
 
@@ -85,8 +85,8 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             }
             return filteredItems
                 .Where(ri =>
-                    (endpointOptions.PostIncludedPatterns == null || !endpointOptions.PostIncludedPatterns.Any() || endpointOptions.PostIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase)))
-                    && (endpointOptions.PostExcludedPatterns == null || !endpointOptions.PostExcludedPatterns.Any() || !endpointOptions.PostExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase))))
+                    (endpointOptions.PostIncludedPatterns == null || !endpointOptions.PostIncludedPatterns.Any() || endpointOptions.PostIncludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
+                    && (endpointOptions.PostExcludedPatterns == null || !endpointOptions.PostExcludedPatterns.Any() || !endpointOptions.PostExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Comment, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))))
                 .ToList();
         }
     }
