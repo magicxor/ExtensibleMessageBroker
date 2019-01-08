@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.TargetProvider.Telegram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.VkFeed", "Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj", "{8B6342A8-19A6-4265-B0F3-D67AA425ACE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.DataSourceProvider.DvachPost", "Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj", "{4995A645-58AD-475A-A3A8-BE3236611E0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.DvachPost", "Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj", "{4995A645-58AD-475A-A3A8-BE3236611E0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.DataSourceProvider.DvachThread", "Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj", "{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.DvachThread", "Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj", "{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.Configurator", "Emb.Configurator\Emb.Configurator.csproj", "{CBFD8632-2BAB-4878-B143-B03709BB2ADE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B329E1-A2F8-439A-AE60-2DA2E7A2F22E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBFD8632-2BAB-4878-B143-B03709BB2ADE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBFD8632-2BAB-4878-B143-B03709BB2ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBFD8632-2BAB-4878-B143-B03709BB2ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBFD8632-2BAB-4878-B143-B03709BB2ADE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

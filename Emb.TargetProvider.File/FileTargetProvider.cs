@@ -27,5 +27,15 @@ namespace Emb.TargetProvider.File
         {
             await SaveAsync(endpointOptionsString, text);
         }
+
+        public Type GetEndpointOptionsType()
+        {
+            return null;
+        }
+
+        public Type GetProviderSettingsType()
+        {
+            return null;
+        }
     }
 }

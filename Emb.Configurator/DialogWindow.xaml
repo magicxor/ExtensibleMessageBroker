@@ -1,0 +1,47 @@
+﻿<Window 
+        x:Name="DialogWindowInstance"
+        x:Class="Emb.Configurator.DialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Emb.Configurator"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="154" Width="300" 
+        ResizeMode="NoResize" 
+        Topmost="True" 
+        SizeToContent="WidthAndHeight"
+        MaxWidth="800"
+        MaxHeight="800"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <Button DockPanel.Dock="Bottom" Content="{Binding ButtonText}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=DialogWindowInstance}" FontSize="16" Margin="2"></Button>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ContentControl Grid.Column="1" Grid.Row="1" />
+                </Grid>
+                <TextBlock Grid.Column="2" Text="{Binding MessageText}" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" FontSize="16" Margin="6,2,2,2"></TextBlock>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>

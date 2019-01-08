@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Emb.DataSourceProvider.DvachPost.Models
 {
     public class EndpointOptions
     {
+        [Required]
         public string BoardId { get; set; }
 
         public bool? ThreadIsSticky { get; set; }
@@ -14,6 +16,5 @@ namespace Emb.DataSourceProvider.DvachPost.Models
 
         public List<string> PostIncludedPatterns { get; set; } = new List<string>();
         public List<string> PostExcludedPatterns { get; set; } = new List<string>();
-
     }
 }

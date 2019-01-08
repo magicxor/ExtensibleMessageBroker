@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Emb.Core.Utils
+namespace Emb.Common.Utils
 {
     public static class FilesystemUtils
     {
