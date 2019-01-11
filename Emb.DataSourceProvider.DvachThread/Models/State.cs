@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Emb.Common.Models
+namespace Emb.DataSourceProvider.DvachThread.Models
 {
     public class State
     {
