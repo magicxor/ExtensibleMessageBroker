@@ -93,7 +93,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                 {
                     httpClientHandler.Proxy = proxy;
                 }
-                using (var httpClient = new HttpClient())
+                using (var httpClient = new HttpClient(httpClientHandler))
                 {
                     var currentPostId = state.LastRecordId + 1;
                     var notFoundPosts = 0;
@@ -131,11 +131,14 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
         public List<Post> Filter(List<Post> extractedItems, State state, EndpointOptions endpointOptions)
         {
             var filteredItems = extractedItems.AsQueryable();
-            return filteredItems
+            var result = filteredItems
                 .Where(ri =>
                     (endpointOptions.IncludedPatterns == null || !endpointOptions.IncludedPatterns.Any() || endpointOptions.IncludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
                     && (endpointOptions.ExcludedPatterns == null || !endpointOptions.ExcludedPatterns.Any() || !endpointOptions.ExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))))
                 .ToList();
+
+            _logger.LogInformation($"{result.Count} posts match");
+            return result;
         }
     }
 }

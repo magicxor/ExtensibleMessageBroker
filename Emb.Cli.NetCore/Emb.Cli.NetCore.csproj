@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Emb.Core\Emb.Core.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj" />
+    <ProjectReference Include="..\Emb.DataSourceProvider.TelegramChannel\Emb.DataSourceProvider.TelegramChannel.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj" />
     <ProjectReference Include="..\Emb.TargetProvider.File\Emb.TargetProvider.File.csproj" />
     <ProjectReference Include="..\Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj" />
