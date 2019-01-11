@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
@@ -26,6 +26,7 @@
     <ProjectReference Include="..\Emb.Core\Emb.Core.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj" />
+    <ProjectReference Include="..\Emb.DataSourceProvider.TelegramChannel\Emb.DataSourceProvider.TelegramChannel.csproj" />
     <ProjectReference Include="..\Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj" />
     <ProjectReference Include="..\Emb.TargetProvider.File\Emb.TargetProvider.File.csproj" />
     <ProjectReference Include="..\Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj" />
