@@ -6,17 +6,18 @@ using System;
 using System.Composition;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace Emb.TargetProvider.Telegram
 {
     [Export(typeof(ITargetProvider))]
-    public class TelegramTargetProvider : ITargetProvider
+    public class TelegramHtmlTargetProvider : ITargetProvider
     {
         private TelegramBotClientFactory _telegramBotClientFactory = new TelegramBotClientFactory();
 
         public async Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
         {
-            var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
+            var providerSettings = configurationRoot.GetSection(typeof(TelegramTargetProvider).Name).Get<ProviderSettings>();
             var telegramBotClient = _telegramBotClientFactory.CreateTelegramBotClient(providerSettings);
 
             const int maxTelegramStringLength = 4095;
@@ -25,7 +26,7 @@ namespace Emb.TargetProvider.Telegram
                 text = text.Substring(0, maxTelegramStringLength);
             }
 
-            await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text);
+            await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text, ParseMode.Html);
         }
 
         public Type GetEndpointOptionsType()
