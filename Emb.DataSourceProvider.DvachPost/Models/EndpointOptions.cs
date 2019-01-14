@@ -7,6 +7,7 @@ namespace Emb.DataSourceProvider.DvachPost.Models
     {
         [Required]
         public string BoardId { get; set; }
+        public bool? AddImageHtml { get; set; }
 
         public bool? ThreadIsSticky { get; set; }
         public List<string> ThreadSubjectIncludedPatterns { get; set; } = new List<string>();
