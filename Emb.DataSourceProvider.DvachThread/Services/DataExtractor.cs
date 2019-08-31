@@ -15,7 +15,7 @@ namespace Emb.DataSourceProvider.DvachThread.Services
         private string StripHtml(string input)
         {
             var dom = new HtmlParser().Parse(input);
-            return dom.DocumentElement.ToHtml(new PlainTextMarkupFormatter());
+            return dom.DocumentElement?.ToHtml(new PlainTextMarkupFormatter());
         }
 
         public List<Thread> Extract(DvachBoard dvachBoard)

@@ -24,7 +24,7 @@ namespace Emb.DataSourceProvider.DvachPost.Services
         private string StripHtml(string input)
         {
             var dom = new HtmlParser().Parse(input);
-            return dom.DocumentElement.ToHtml(new PlainTextMarkupFormatter());
+            return dom.DocumentElement?.ToHtml(new PlainTextMarkupFormatter());
         }
 
         private List<Dto.BoardDto.Thread> ExtractThreads(Dto.BoardDto.DvachBoardDto dvachBoard)

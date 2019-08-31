@@ -126,7 +126,7 @@ namespace Emb.Core.Services
 
         private string GetStateFilePath(string dataFlowName)
         {
-            var stateDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException();
+            var stateDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException();
             return Path.Combine(stateDirectory, "State", FilesystemUtils.CoerceValidFileName(dataFlowName + ".state"));
         }
 

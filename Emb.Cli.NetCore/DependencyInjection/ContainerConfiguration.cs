@@ -16,7 +16,7 @@ namespace Emb.Cli.NetCore.DependencyInjection
         private static ILoggerFactory CreateLoggerFactory(ApplicationSettings applicationSettings)
         {
             var loggerFactory = new LoggerFactory();
-            var logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? throw new InvalidOperationException(), applicationSettings.LogDirectoryName, "log-{Date}.txt");
+            var logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException(), applicationSettings.LogDirectoryName, "log-{Date}.txt");
             loggerFactory
                 .AddConsole(applicationSettings.LogLevel)
                 .AddFile(logPath, applicationSettings.LogLevel, retainedFileCountLimit: 10);

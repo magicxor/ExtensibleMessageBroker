@@ -21,7 +21,7 @@ namespace Emb.Cli.NetCore
 
         private static IConfigurationRoot GetConfigurationRoot()
         {
-            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(currentDirectory)
                 .AddJsonFile(Defaults.ConfigurationFileName);
@@ -49,7 +49,7 @@ namespace Emb.Cli.NetCore
                 string jsonSchemasDirectory;
                 if (string.IsNullOrWhiteSpace(commandLineOptions.Directory))
                 {
-                    jsonSchemasDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                    jsonSchemasDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
                 }
                 else
                 {
