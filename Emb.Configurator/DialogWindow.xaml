@@ -18,9 +18,6 @@
         <DockPanel LastChildFill="True">
             <Button DockPanel.Dock="Bottom" Content="{Binding ButtonText}" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=DialogWindowInstance}" FontSize="16" Margin="2"></Button>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"></ColumnDefinition>
                     <ColumnDefinition Width="30"></ColumnDefinition>

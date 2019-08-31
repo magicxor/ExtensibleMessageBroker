@@ -33,7 +33,7 @@ namespace Emb.DataSourceProvider.TelegramChannel
                 state.LastRecordId = lastItem.Id;
             }
 
-            var result = new DataFetchResult()
+            var result = new DataFetchResult
             {
                 Items = renderedItems,
                 State = JsonConvert.SerializeObject(state),

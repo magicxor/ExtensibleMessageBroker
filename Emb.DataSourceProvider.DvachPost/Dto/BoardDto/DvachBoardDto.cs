@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Emb.DataSourceProvider.DvachPost.Dto.BoardDto;
 using Newtonsoft.Json;
 
 namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto

@@ -7,10 +7,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Models
     {
         [Required]
         public string Hostname { get; set; }
-
-        [Required]
-        public int MaxNotFoundPostsToStop { get; set; }
-
+        
         [Required]
         public ProxyProtocols ProxyProtocol { get; set; }
 

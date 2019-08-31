@@ -4,7 +4,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AngleSharp.Extensions;
 using AngleSharp.Parser.Html;
-using Emb.Common.Models;
 using Emb.Common.Utils;
 using Emb.DataSourceProvider.DvachPost.Abstractions;
 using Emb.DataSourceProvider.DvachPost.Models;

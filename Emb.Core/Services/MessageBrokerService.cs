@@ -102,15 +102,15 @@ namespace Emb.Core.Services
                             }
                             else
                             {
-                                foreach (var dataFetchResultItem in dataFetchResult.Items)
+                                foreach (var text in dataFetchResult.Items)
                                 {
                                     try
                                     {
-                                        await targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, dataFetchResultItem);
+                                        await targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, text);
                                     }
                                     catch (Exception e)
                                     {
-                                        _logger.LogError(e, $"error during sending content via target provider {targetProvider.GetType().Name}");
+                                        _logger.LogError(e, $"error during sending content {text} via target provider {targetProvider.GetType().Name}");
                                     }
                                 }
                             }

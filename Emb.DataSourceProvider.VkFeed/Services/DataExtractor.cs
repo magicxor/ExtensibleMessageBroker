@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Emb.Common.Models;
 using Emb.Common.Utils;
 using Emb.DataSourceProvider.VkFeed.Abstractions;
 using Emb.DataSourceProvider.VkFeed.Dto;
@@ -18,7 +17,7 @@ namespace Emb.DataSourceProvider.VkFeed.Services
     {
         private async Task<VkNewsFeedGetResponse> GetVkFeedAsync(IVkApi api, string accessToken, string startFrom = null)
         {
-            Thread.Sleep(200);
+            Thread.Sleep(200); // todo: move to config
             if (string.IsNullOrWhiteSpace(startFrom))
             {
                 return await api.GetFeedFirstPage(accessToken);
