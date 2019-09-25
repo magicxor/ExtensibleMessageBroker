@@ -3,11 +3,40 @@ using Emb.DataSourceProvider.DvachPost.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Emb.DataSourceProvider.DvachPost.Services
 {
     public class Renderer
     {
+        private bool CommentStartsWithSubject(string comment, string subject)
+        {
+            comment = comment?.Trim();
+            subject = subject?.Trim();
+            if (string.IsNullOrWhiteSpace(comment) || string.IsNullOrWhiteSpace(subject))
+            {
+                return false;
+            }
+            
+            var commentFirstLineMatch = Regex.Match(comment, "^[^\n\r]+");
+            if (!commentFirstLineMatch.Success)
+            {
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(commentFirstLineMatch.Value))
+            {
+                return false;
+            }
+
+            var commentFirstLine = commentFirstLineMatch.Value;
+            if (subject.Length > commentFirstLine.Length)
+            {
+                subject = subject.Substring(0, commentFirstLine.Length);
+            }
+
+            return commentFirstLine.StartsWith(subject);
+        }
+        
         private string PostToString(Post post, Uri siteUri, EndpointOptions endpointOptions)
         {
             var imageUri = endpointOptions.AddImageHtml.HasValue && endpointOptions.AddImageHtml == true && post.Files != null && post.Files.Any()
@@ -16,7 +45,7 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             
             var postUri = new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{post.Parent}.html", Fragment = post.Num.ToString() }.Uri + Environment.NewLine;
             
-            var postSubject = !string.IsNullOrWhiteSpace(post.Subject) && !post.Comment.StartsWith(post.Subject)
+            var postSubject = !string.IsNullOrWhiteSpace(post.Subject) && !CommentStartsWithSubject(post.Comment, post.Subject)
                 ? $"[{post.Subject}]" + Environment.NewLine
                 : string.Empty;
             
