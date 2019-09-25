@@ -10,14 +10,20 @@ namespace Emb.DataSourceProvider.DvachPost.Services
     {
         private string PostToString(Post post, Uri siteUri, EndpointOptions endpointOptions)
         {
-            var imageHtml = endpointOptions.AddImageHtml.HasValue && endpointOptions.AddImageHtml == true && post.Files != null && post.Files.Any()
-                ? $@"<a href=""{new UriBuilder(siteUri) { Path = post.Files.First().Path }.Uri}"">🖼️</a> "
+            var imageUri = endpointOptions.AddImageHtml.HasValue && endpointOptions.AddImageHtml == true && post.Files != null && post.Files.Any()
+                ? new UriBuilder(siteUri) { Path = post.Files.First().Path }.Uri + Environment.NewLine
                 : string.Empty;
-
-            return imageHtml
-                   + new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{post.Parent}.html", Fragment = post.Num.ToString() }.Uri
-                   + Environment.NewLine
-                   + post.Comment;
+            
+            var postUri = new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{post.Parent}.html", Fragment = post.Num.ToString() }.Uri + Environment.NewLine;
+            
+            var postSubject = !string.IsNullOrWhiteSpace(post.Subject) && !post.Comment.StartsWith(post.Subject)
+                ? $"[{post.Subject}]" + Environment.NewLine
+                : string.Empty;
+            
+            return imageUri
+                + postUri
+                + postSubject
+                + post.Comment;
         }
 
         public List<string> RenderAsPlainText(IEnumerable<Post> posts, Uri siteUri, EndpointOptions endpointOptions)

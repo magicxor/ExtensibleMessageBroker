@@ -10,13 +10,19 @@ namespace Emb.DataSourceProvider.DvachThread.Services
     {
         private string ThreadToString(Thread thread, Uri siteUri, EndpointOptions endpointOptions)
         {
-            var imageHtml = endpointOptions.AddImageHtml.HasValue && endpointOptions.AddImageHtml == true && thread.Files != null && thread.Files.Any()
-                ? $@"<a href=""{new UriBuilder(siteUri) { Path = thread.Files.First().Path }.Uri}"">🖼️</a> "
+            var imageUri = endpointOptions.AddImageHtml.HasValue && endpointOptions.AddImageHtml == true && thread.Files != null && thread.Files.Any()
+                ? new UriBuilder(siteUri) { Path = thread.Files.First().Path }.Uri + Environment.NewLine
                 : string.Empty;
-
-            return imageHtml
-                + new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{thread.Num}.html" }.Uri
-                + Environment.NewLine
+            
+            var threadUri = new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{thread.Num}.html" }.Uri + Environment.NewLine;
+            
+            var threadSubject = !string.IsNullOrWhiteSpace(thread.Subject) && !thread.Comment.StartsWith(thread.Subject)
+                ? $"[{thread.Subject}]" + Environment.NewLine
+                : string.Empty;
+            
+            return imageUri
+                + threadUri
+                + threadSubject
                 + thread.Comment;
         }
 
