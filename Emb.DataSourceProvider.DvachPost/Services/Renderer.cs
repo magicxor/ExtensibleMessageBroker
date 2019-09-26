@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Emb.DataSourceProvider.DvachPost.Extensions;
 
 namespace Emb.DataSourceProvider.DvachPost.Services
 {
@@ -45,8 +46,9 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             
             var postUri = new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{post.Parent}.html", Fragment = post.Num.ToString() }.Uri + Environment.NewLine;
             
-            var postSubject = !string.IsNullOrWhiteSpace(post.Subject) && !CommentStartsWithSubject(post.Comment, post.Subject)
-                ? $"[{post.Subject}]" + Environment.NewLine
+            var subjectDecoded = post.SubjectDecoded();
+            var postSubject = !string.IsNullOrWhiteSpace(subjectDecoded) && !CommentStartsWithSubject(post.Comment, subjectDecoded)
+                ? $"[{subjectDecoded}]" + Environment.NewLine
                 : string.Empty;
             
             return imageUri

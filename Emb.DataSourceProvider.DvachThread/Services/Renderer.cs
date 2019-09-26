@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Emb.DataSourceProvider.DvachThread.Dto;
+using Emb.DataSourceProvider.DvachThread.Extensions;
 using Emb.DataSourceProvider.DvachThread.Models;
 
 namespace Emb.DataSourceProvider.DvachThread.Services
@@ -45,8 +46,9 @@ namespace Emb.DataSourceProvider.DvachThread.Services
             
             var threadUri = new UriBuilder(siteUri) { Path = $"{endpointOptions.BoardId}/res/{thread.Num}.html" }.Uri + Environment.NewLine;
             
-            var threadSubject = !string.IsNullOrWhiteSpace(thread.Subject) && !CommentStartsWithSubject(thread.Comment, thread.Subject)
-                ? $"[{thread.Subject}]" + Environment.NewLine
+            var subjectDecoded = thread.SubjectDecoded();
+            var threadSubject = !string.IsNullOrWhiteSpace(subjectDecoded) && !CommentStartsWithSubject(thread.Comment, subjectDecoded)
+                ? $"[{subjectDecoded}]" + Environment.NewLine
                 : string.Empty;
             
             return imageUri
