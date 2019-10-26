@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Schema.Generation;
 
-namespace Emb.Cli.NetCore.DependencyInjection
+namespace Emb.Cli.NetFramework.DependencyInjection
 {
     public static class ContainerConfiguration
     {
@@ -31,7 +31,7 @@ namespace Emb.Cli.NetCore.DependencyInjection
                 .AddSingleton<ApplicationSettings>(applicationSettings)
                 .AddScoped<ILoggerFactory>(c => CreateLoggerFactory(applicationSettings))
                 .AddScoped<JSchemaGenerator>()
-                .AddScoped<IPluginManager, PluginManager>()
+                .AddScoped<IPluginManager, SimplePluginManager>()
                 .AddScoped<MessageBrokerService>();
         }
     }

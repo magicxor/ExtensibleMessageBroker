@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Emb.Core.Services
 {
-    public class PluginManager
+    public class PluginManager: IPluginManager
     {
         private readonly ILogger _logger;
 
