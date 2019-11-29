@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Emb.Cli.NetFramework</RootNamespace>
+    <AssemblyName>Emb.Cli.NetFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="DependencyInjection\ContainerConfiguration.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimplePluginManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="appsettings.json.example" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Emb.Common\Emb.Common.csproj">
+      <Project>{640407cc-2c7d-4f9f-8230-5b278627e31d}</Project>
+      <Name>Emb.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.Core\Emb.Core.csproj">
+      <Project>{d0dde7b2-2a2d-44b0-a41a-610f946ddde7}</Project>
+      <Name>Emb.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.DataSourceProvider.DvachPost\Emb.DataSourceProvider.DvachPost.csproj">
+      <Project>{4995a645-58ad-475a-a3a8-be3236611e0c}</Project>
+      <Name>Emb.DataSourceProvider.DvachPost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.DataSourceProvider.DvachThread\Emb.DataSourceProvider.DvachThread.csproj">
+      <Project>{82b329e1-a2f8-439a-ae60-2da2e7a2f22e}</Project>
+      <Name>Emb.DataSourceProvider.DvachThread</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.DataSourceProvider.TelegramChannel\Emb.DataSourceProvider.TelegramChannel.csproj">
+      <Project>{975042fb-752d-4e00-a1bb-0384cf5342f5}</Project>
+      <Name>Emb.DataSourceProvider.TelegramChannel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj">
+      <Project>{8b6342a8-19a6-4265-b0f3-d67aa425ace2}</Project>
+      <Name>Emb.DataSourceProvider.VkFeed</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.TargetProvider.File\Emb.TargetProvider.File.csproj">
+      <Project>{90af113a-6d8c-42e0-80d7-c1167d430a03}</Project>
+      <Name>Emb.TargetProvider.File</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.TargetProvider.Telegram\Emb.TargetProvider.Telegram.csproj">
+      <Project>{920797b8-e177-42d0-a689-871e5f9d5766}</Project>
+      <Name>Emb.TargetProvider.Telegram</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser">
+      <Version>2.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Console">
+      <Version>2.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json.Schema">
+      <Version>3.0.11</Version>
+    </PackageReference>
+    <PackageReference Include="Serilog.Extensions.Logging.File">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

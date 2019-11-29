@@ -21,7 +21,7 @@ namespace Emb.Core.Services
         private readonly PluginSet _pluginSet;
         private readonly JSchemaGenerator _schemaGenerator;
 
-        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, PluginManager pluginManager, JSchemaGenerator schemaGenerator)
+        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, IPluginManager pluginManager, JSchemaGenerator schemaGenerator)
         {
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<MessageBrokerService>();

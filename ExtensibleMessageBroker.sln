@@ -23,7 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.Configurator", "Emb.Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.DataSourceProvider.TelegramChannel", "Emb.DataSourceProvider.TelegramChannel\Emb.DataSourceProvider.TelegramChannel.csproj", "{975042FB-752D-4E00-A1BB-0384CF5342F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.RegExprTests", "Emb.RegExprTests\Emb.RegExprTests.csproj", "{F5CAAE9F-98D4-4CB5-9159-0988719D5AF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.RegExprTests", "Emb.RegExprTests\Emb.RegExprTests.csproj", "{F5CAAE9F-98D4-4CB5-9159-0988719D5AF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.Cli.NetFramework", "Emb.Cli.NetFramework\Emb.Cli.NetFramework.csproj", "{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{F5CAAE9F-98D4-4CB5-9159-0988719D5AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5CAAE9F-98D4-4CB5-9159-0988719D5AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5CAAE9F-98D4-4CB5-9159-0988719D5AF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
