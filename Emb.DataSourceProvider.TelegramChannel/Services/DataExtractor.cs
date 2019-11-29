@@ -91,6 +91,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                 if (proxy != null)
                 {
                     httpClientHandler.Proxy = proxy;
+                    httpClientHandler.UseProxy = true;
                 }
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
