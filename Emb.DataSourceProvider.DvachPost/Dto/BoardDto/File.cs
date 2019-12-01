@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
 {
@@ -58,5 +60,11 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
 
         [JsonProperty("sticker", NullValueHandling = NullValueHandling.Ignore)]
         public string Sticker { get; set; }
+
+        [OnError]
+        internal void OnError(StreamingContext context, ErrorContext errorContext)
+        {
+            errorContext.Handled = true;
+        }
     }
 }
