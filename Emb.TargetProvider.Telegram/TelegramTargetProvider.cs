@@ -2,11 +2,11 @@
 using Emb.TargetProvider.Telegram.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Polly;
 using System;
 using System.Composition;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace Emb.TargetProvider.Telegram
 {
@@ -14,7 +14,7 @@ namespace Emb.TargetProvider.Telegram
     public class TelegramTargetProvider : ITargetProvider
     {
         private readonly TelegramBotClientFactory _telegramBotClientFactory = new TelegramBotClientFactory();
-
+        
         public async Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
         {
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
@@ -26,7 +26,48 @@ namespace Emb.TargetProvider.Telegram
                 text = text.Substring(0, maxTelegramStringLength);
             }
 
-            await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text);
+            var logger = loggerFactory.CreateLogger<TelegramTargetProvider>();
+
+            var attempt = 0;
+            var policyResult = await Policy
+                .Handle<Exception>()
+                .WaitAndRetryAsync(providerSettings.RetryCount, retryCounter => 
+                {
+                    switch (retryCounter)
+                    {
+                        case 0:
+                            return TimeSpan.Zero;
+                        case 1:
+                            return TimeSpan.FromSeconds(1);
+                        default:
+                            return TimeSpan.FromMinutes(1);
+                    }
+                })
+                .ExecuteAndCaptureAsync(async () => 
+                {
+                    try
+                    {
+                        attempt++;
+                        logger.LogDebug($"{nameof(TelegramTargetProvider)}.{nameof(SendAsync)} attempt №{attempt}");
+
+                        await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text);
+
+                        if (providerSettings.DelayMilliseconds > 0)
+                        {
+                            await Task.Delay(providerSettings.DelayMilliseconds);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        logger.LogTrace(e, $"{nameof(SendAsync)} error");
+                        throw;
+                    }
+                });
+
+            if (policyResult.Outcome == OutcomeType.Failure)
+            {
+                throw policyResult.FinalException;
+            }
         }
 
         public Type GetEndpointOptionsType()

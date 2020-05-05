@@ -64,6 +64,8 @@
     "ProxyPort": 0,
     "ProxyAuthentication": false,
     "ProxyUsername": "",
-    "ProxyPassword": ""
+    "ProxyPassword": "",
+    "RetryCount": 3,
+    "DelayMilliseconds": 1000
   }
 }
