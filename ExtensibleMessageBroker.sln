@@ -27,6 +27,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emb.RegExprTests", "Emb.Reg
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.Cli.NetFramework", "Emb.Cli.NetFramework\Emb.Cli.NetFramework.csproj", "{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.Web.NetCore", "Emb.Web.NetCore\Emb.Web.NetCore.csproj", "{5D92559D-9B1F-4D8B-B2C6-67989E478B85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emb.SimplePluginManager", "Emb.SimplePluginManager\Emb.SimplePluginManager.csproj", "{47618734-9EF6-4B94-9ADE-4B7C754C6861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BFF639A-42FB-422C-8DCC-AE1D1C4E405F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D92559D-9B1F-4D8B-B2C6-67989E478B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D92559D-9B1F-4D8B-B2C6-67989E478B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D92559D-9B1F-4D8B-B2C6-67989E478B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D92559D-9B1F-4D8B-B2C6-67989E478B85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47618734-9EF6-4B94-9ADE-4B7C754C6861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47618734-9EF6-4B94-9ADE-4B7C754C6861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47618734-9EF6-4B94-9ADE-4B7C754C6861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47618734-9EF6-4B94-9ADE-4B7C754C6861}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

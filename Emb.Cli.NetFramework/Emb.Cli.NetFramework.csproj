@@ -64,7 +64,6 @@
     <Compile Include="DependencyInjection\ContainerConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimplePluginManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -106,6 +105,10 @@
     <ProjectReference Include="..\Emb.DataSourceProvider.VkFeed\Emb.DataSourceProvider.VkFeed.csproj">
       <Project>{8b6342a8-19a6-4265-b0f3-d67aa425ace2}</Project>
       <Name>Emb.DataSourceProvider.VkFeed</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emb.SimplePluginManager\Emb.SimplePluginManager.csproj">
+      <Project>{47618734-9ef6-4b94-9ade-4b7c754c6861}</Project>
+      <Name>Emb.SimplePluginManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Emb.TargetProvider.File\Emb.TargetProvider.File.csproj">
       <Project>{90af113a-6d8c-42e0-80d7-c1167d430a03}</Project>

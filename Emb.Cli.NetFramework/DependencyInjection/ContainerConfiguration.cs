@@ -31,7 +31,7 @@ namespace Emb.Cli.NetFramework.DependencyInjection
                 .AddSingleton<ApplicationSettings>(applicationSettings)
                 .AddScoped<ILoggerFactory>(c => CreateLoggerFactory(applicationSettings))
                 .AddScoped<JSchemaGenerator>()
-                .AddScoped<IPluginManager, SimplePluginManager>()
+                .AddScoped<IPluginManager, PluginManager.SimplePluginManager>()
                 .AddScoped<MessageBrokerService>();
         }
     }

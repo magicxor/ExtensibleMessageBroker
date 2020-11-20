@@ -9,7 +9,7 @@ using Emb.TargetProvider.File;
 using Emb.TargetProvider.Telegram;
 using System.Collections.Generic;
 
-namespace Emb.Cli.NetFramework
+namespace Emb.PluginManager
 {
     public class SimplePluginManager : IPluginManager
     {
