@@ -17,15 +17,22 @@ namespace Emb.Core.Services
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly IConfigurationRoot _configurationRoot;
+        private readonly ApplicationSettings _applicationSettings;
         private readonly ILogger _logger;
         private readonly PluginSet _pluginSet;
         private readonly JSchemaGenerator _schemaGenerator;
+        private const int DefaultTimeoutInSeconds = 900;
 
-        public MessageBrokerService(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, IPluginManager pluginManager, JSchemaGenerator schemaGenerator)
+        public MessageBrokerService(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot,
+            ApplicationSettings applicationSettings,
+            IPluginManager pluginManager, 
+            JSchemaGenerator schemaGenerator)
         {
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<MessageBrokerService>();
             _configurationRoot = configurationRoot;
+            _applicationSettings = applicationSettings;
             _pluginSet = pluginManager.LoadPlugins();
             _schemaGenerator = schemaGenerator;
         }
@@ -79,6 +86,14 @@ namespace Emb.Core.Services
         {
             _logger.LogInformation($"running {nameof(RunOnceAsync)}...");
 
+            var sourceTimeout = (_applicationSettings.SourceTimeoutInSeconds.HasValue && _applicationSettings.SourceTimeoutInSeconds.Value > 0)
+                ? TimeSpan.FromSeconds(_applicationSettings.SourceTimeoutInSeconds.Value)
+                : TimeSpan.FromSeconds(DefaultTimeoutInSeconds);
+
+            var targetTimeout = (_applicationSettings.TargetTimeoutInSeconds.HasValue && _applicationSettings.TargetTimeoutInSeconds.Value > 0)
+                ? TimeSpan.FromSeconds(_applicationSettings.TargetTimeoutInSeconds.Value)
+                : TimeSpan.FromSeconds(DefaultTimeoutInSeconds);
+
             foreach (var dataFlow in dataFlows)
             {
                 try
@@ -91,7 +106,9 @@ namespace Emb.Core.Services
                     else
                     {
                         var stateString = LoadState(dataFlow.Name);
-                        var dataFetchResult = await dataSourceProvider.GetNewItemsAsPlainTextAsync(_loggerFactory, _configurationRoot, dataFlow.Source.EndpointOptions, stateString);
+                        var dataFetchResult = await TaskUtils.CancelAfterAsync(
+                            ct => dataSourceProvider.GetNewItemsAsPlainTextAsync(_loggerFactory, _configurationRoot, dataFlow.Source.EndpointOptions, stateString),
+                            sourceTimeout);
                         SaveState(dataFlow.Name, dataFetchResult.State);
                         foreach (var target in dataFlow.Targets)
                         {
@@ -106,7 +123,9 @@ namespace Emb.Core.Services
                                 {
                                     try
                                     {
-                                        await targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, text);
+                                        await TaskUtils.CancelAfterAsync(
+                                            ct => targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, text),
+                                            targetTimeout);
                                     }
                                     catch (Exception e)
                                     {
