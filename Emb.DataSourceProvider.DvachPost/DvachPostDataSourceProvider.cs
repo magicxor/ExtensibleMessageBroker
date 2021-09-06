@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Emb.Common.Models;
@@ -18,7 +19,11 @@ namespace Emb.DataSourceProvider.DvachPost
     [Export(typeof(IDataSourceProvider))]
     public class DvachPostDataSourceProvider : IDataSourceProvider
     {
-        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString)
+        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string stateString,
+            CancellationToken cancellationToken)
         {
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
             var endpointOptions = JsonConvert.DeserializeObject<EndpointOptions>(endpointOptionsString);
@@ -29,7 +34,7 @@ namespace Emb.DataSourceProvider.DvachPost
             var siteUri = new Uri("https://" + providerSettings.Hostname);
             var api = RestService.For<IDvachApi>(siteUri.ToString());
             
-            var extractedItems = await dataExtractor.ExtractAsync(api, state, endpointOptions);
+            var extractedItems = await dataExtractor.ExtractAsync(api, state, endpointOptions, cancellationToken);
             var filteredItems = dataExtractor.Filter(extractedItems, state, endpointOptions);
             var renderedItems = renderer.RenderAsPlainText(filteredItems, siteUri, endpointOptions);
 

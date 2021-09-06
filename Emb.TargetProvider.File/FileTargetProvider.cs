@@ -2,6 +2,7 @@
 using System.Composition;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +24,11 @@ namespace Emb.TargetProvider.File
             }
         }
 
-        public async Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
+        public async Task SendAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string text,
+            CancellationToken cancellationToken)
         {
             await SaveAsync(endpointOptionsString, text);
         }

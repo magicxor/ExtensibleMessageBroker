@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using AngleSharp.Extensions;
 using AngleSharp.Parser.Html;
@@ -45,12 +46,12 @@ namespace Emb.DataSourceProvider.DvachPost.Services
                 .ToList();
         }
 
-        private async Task<List<Dto.ThreadDto.Post>> ExtractPostsAsync(IDvachApi api, EndpointOptions endpointOptions, IList<string> threadIdentifiers)
+        private async Task<List<Dto.ThreadDto.Post>> ExtractPostsAsync(IDvachApi api, EndpointOptions endpointOptions, IList<string> threadIdentifiers, CancellationToken cancellationToken)
         {
             var result = new List<Dto.ThreadDto.Post>();
             foreach (var threadId in threadIdentifiers)
             {
-                var threadDto = await api.GetThread(endpointOptions.BoardId, threadId);
+                var threadDto = await api.GetThread(endpointOptions.BoardId, threadId, cancellationToken);
                 var posts = threadDto?.Threads?.FirstOrDefault()?.Posts ??
                             new List<Dto.ThreadDto.Post>();
                 result.AddRange(posts);
@@ -59,9 +60,9 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             return result.OrderBy(p => p.Timestamp).ToList();
         }
 
-        public async Task<List<Dto.ThreadDto.Post>> ExtractAsync(IDvachApi api, State state, EndpointOptions endpointOptions)
+        public async Task<List<Dto.ThreadDto.Post>> ExtractAsync(IDvachApi api, State state, EndpointOptions endpointOptions, CancellationToken cancellationToken)
         {
-            var dvachBoard = await api.GetBoard(endpointOptions.BoardId);
+            var dvachBoard = await api.GetBoard(endpointOptions.BoardId, cancellationToken);
 
             var extractedThreads = ExtractThreads(dvachBoard);
             _logger.LogInformation($"{extractedThreads.Count} threads total in {endpointOptions.BoardId}");
@@ -69,7 +70,7 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             var filteredThreads = FilterThreads(extractedThreads, state, endpointOptions);
             _logger.LogInformation($"{filteredThreads.Count} relevant threads in {endpointOptions.BoardId}");
 
-            var extractedPosts = await ExtractPostsAsync(api, endpointOptions, filteredThreads.Select(p => p.Num).ToList());
+            var extractedPosts = await ExtractPostsAsync(api, endpointOptions, filteredThreads.Select(p => p.Num).ToList(), cancellationToken);
             _logger.LogInformation($"{extractedPosts.Count} posts extracted from {endpointOptions.BoardId} threads");
 
             return extractedPosts;

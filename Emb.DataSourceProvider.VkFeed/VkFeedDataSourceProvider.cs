@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Emb.Common.Models;
@@ -21,7 +22,11 @@ namespace Emb.DataSourceProvider.VkFeed
         private readonly Renderer _renderer = new Renderer();
         private readonly DataExtractor _dataExtractor = new DataExtractor();
 
-        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString)
+        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string stateString,
+            CancellationToken cancellationToken)
         {
             var logger = loggerFactory.CreateLogger<VkFeedDataSourceProvider>();
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
@@ -30,7 +35,7 @@ namespace Emb.DataSourceProvider.VkFeed
 
             var siteUri = new Uri("https://api.vk.com");
             var api = RestService.For<IVkApi>(siteUri.ToString());
-            var extractedItems = await _dataExtractor.ExtractAsync(logger, api, providerSettings, state, endpointOptions);
+            var extractedItems = await _dataExtractor.ExtractAsync(logger, api, providerSettings, state, endpointOptions, cancellationToken);
             var filteredItems = _dataExtractor.Filter(extractedItems, state, endpointOptions);
             var renderedItems = _renderer.RenderAsPlainText(filteredItems);
 
@@ -39,7 +44,7 @@ namespace Emb.DataSourceProvider.VkFeed
             {
                 state.LastRecordCreatedUtc = DateTimeUtils.TimestampToUtcDateTime(lastItem.Date);
             }
-            var result = new DataFetchResult()
+            var result = new DataFetchResult
             {
                 Items = renderedItems,
                 State = JsonConvert.SerializeObject(state),

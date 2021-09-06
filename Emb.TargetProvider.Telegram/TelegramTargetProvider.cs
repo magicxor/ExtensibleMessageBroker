@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using System;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot.Types;
 
@@ -15,7 +16,11 @@ namespace Emb.TargetProvider.Telegram
     {
         private readonly TelegramBotClientFactory _telegramBotClientFactory = new TelegramBotClientFactory();
         
-        public async Task SendAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string text)
+        public async Task SendAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string text,
+            CancellationToken cancellationToken)
         {
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
             var telegramBotClient = _telegramBotClientFactory.CreateTelegramBotClient(providerSettings);
@@ -50,11 +55,11 @@ namespace Emb.TargetProvider.Telegram
                         attempt++;
                         logger.LogDebug($"{nameof(TelegramTargetProvider)}.{nameof(SendAsync)} attempt №{attempt}");
 
-                        await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text);
+                        await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text, cancellationToken: cancellationToken);
 
                         if (providerSettings.DelayMilliseconds > 0)
                         {
-                            await Task.Delay(providerSettings.DelayMilliseconds);
+                            await Task.Delay(providerSettings.DelayMilliseconds, cancellationToken);
                         }
                     }
                     catch(Exception e)

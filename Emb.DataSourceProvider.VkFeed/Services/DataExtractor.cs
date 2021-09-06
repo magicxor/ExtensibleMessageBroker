@@ -15,20 +15,20 @@ namespace Emb.DataSourceProvider.VkFeed.Services
 {
     public class DataExtractor
     {
-        private async Task<VkNewsFeedGetResponse> GetVkFeedAsync(IVkApi api, string accessToken, string startFrom = null)
+        private async Task<VkNewsFeedGetResponse> GetVkFeedAsync(IVkApi api, string accessToken, string startFrom, CancellationToken cancellationToken)
         {
             Thread.Sleep(200); // todo: move to config
             if (string.IsNullOrWhiteSpace(startFrom))
             {
-                return await api.GetFeedFirstPage(accessToken);
+                return await api.GetFeedFirstPage(accessToken, cancellationToken);
             }
             else
             {
-                return await api.GetFeedNextPage(accessToken, startFrom);
+                return await api.GetFeedNextPage(accessToken, startFrom, cancellationToken);
             }
         }
 
-        public bool CheckSexProperty(Profile profile, bool desiredIsFemaleValue)
+        private bool IsSexMatch(Profile profile, bool desiredIsFemaleValue)
         {
             if (profile.Sex == 2 && desiredIsFemaleValue == false) { return true; }
             else
@@ -36,12 +36,12 @@ namespace Emb.DataSourceProvider.VkFeed.Services
             else
             if (profile.Sex == 1 && desiredIsFemaleValue == false) { return false; }
             else 
-            if (profile.Sex == 1 && desiredIsFemaleValue == true){ return true; }
+            if (profile.Sex == 1 && desiredIsFemaleValue == true) { return true; }
             else
             { return true; }
         }
 
-        public async Task<VkNewsfeedResult> ExtractAsync(ILogger logger, IVkApi api, ProviderSettings providerSettings, State state, EndpointOptions endpointOptions)
+        public async Task<VkNewsfeedResult> ExtractAsync(ILogger logger, IVkApi api, ProviderSettings providerSettings, State state, EndpointOptions endpointOptions, CancellationToken cancellationToken)
         {
             VkNewsFeedGetResponse apiResult;
             string startFrom = null;
@@ -49,7 +49,7 @@ namespace Emb.DataSourceProvider.VkFeed.Services
             var extractedItems = new List<ResponseItem>();
             do
             {
-                apiResult = await GetVkFeedAsync(api, providerSettings.AccessToken, startFrom);
+                apiResult = await GetVkFeedAsync(api, providerSettings.AccessToken, startFrom, cancellationToken);
                 logger.LogDebug($"{nameof(GetVkFeedAsync)} result: {apiResult.Response.Items.Count} items, NextFrom = {apiResult.Response.NextFrom}");
                 startFrom = apiResult.Response.NextFrom;
                 extractedProfiles.AddRange(apiResult.Response.Profiles);
@@ -76,7 +76,7 @@ namespace Emb.DataSourceProvider.VkFeed.Services
                 .Where(ri =>
                     (ri.MarkedAsAds == null || ri.MarkedAsAds == 0)
                     && !string.IsNullOrEmpty(ri.Text)
-                    && (endpointOptions.IsFemale == null || ri.SignerId == null || vkNewsfeedResult.Profiles.All(p => p.Id != ri.SignerId) || CheckSexProperty(vkNewsfeedResult.Profiles.First(p => p.Id == ri.SignerId), endpointOptions.IsFemale.Value))
+                    && (endpointOptions.IsFemale == null || ri.SignerId == null || vkNewsfeedResult.Profiles.All(p => p.Id != ri.SignerId) || IsSexMatch(vkNewsfeedResult.Profiles.First(p => p.Id == ri.SignerId), endpointOptions.IsFemale.Value))
                     && (endpointOptions.IncludedPatterns == null || !endpointOptions.IncludedPatterns.Any() || endpointOptions.IncludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline)))
                     && (endpointOptions.ExcludedPatterns == null || !endpointOptions.ExcludedPatterns.Any() || !endpointOptions.ExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))));
             return filteredItems

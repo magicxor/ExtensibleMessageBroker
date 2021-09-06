@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.DataSourceProvider.TelegramChannel.Services;
 
@@ -15,7 +16,11 @@ namespace Emb.DataSourceProvider.TelegramChannel
     [Export(typeof(IDataSourceProvider))]
     public class TelegramChannelDataSourceProvider : IDataSourceProvider
     {
-        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString)
+        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string stateString,
+            CancellationToken cancellationToken)
         {
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
             var endpointOptions = JsonConvert.DeserializeObject<EndpointOptions>(endpointOptionsString);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.Common.Utils;
 using Emb.Core.Constants;
@@ -37,7 +38,7 @@ namespace Emb.Core.Services
             _schemaGenerator = schemaGenerator;
         }
 
-        public void GenerateJsonSchema(string basePath, string providerName, string modelName, Type modelType)
+        private void GenerateJsonSchema(string basePath, string providerName, string modelName, Type modelType)
         {
             if (modelType != null)
             {
@@ -82,7 +83,7 @@ namespace Emb.Core.Services
             }
         }
 
-        public async Task RunOnceAsync(IList<DataFlow> dataFlows)
+        public async Task RunOnceAsync(IList<DataFlow> dataFlows, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"running {nameof(RunOnceAsync)}...");
 
@@ -107,8 +108,9 @@ namespace Emb.Core.Services
                     {
                         var stateString = LoadState(dataFlow.Name);
                         var dataFetchResult = await TaskUtils.CancelAfterAsync(
-                            ct => dataSourceProvider.GetNewItemsAsPlainTextAsync(_loggerFactory, _configurationRoot, dataFlow.Source.EndpointOptions, stateString),
-                            sourceTimeout);
+                            ct => dataSourceProvider.GetNewItemsAsPlainTextAsync(_loggerFactory, _configurationRoot, dataFlow.Source.EndpointOptions, stateString, ct),
+                            sourceTimeout,
+                            cancellationToken);
                         SaveState(dataFlow.Name, dataFetchResult.State);
                         foreach (var target in dataFlow.Targets)
                         {
@@ -124,8 +126,9 @@ namespace Emb.Core.Services
                                     try
                                     {
                                         await TaskUtils.CancelAfterAsync(
-                                            ct => targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, text),
-                                            targetTimeout);
+                                            ct => targetProvider.SendAsync(_loggerFactory, _configurationRoot, target.EndpointOptions, text, ct),
+                                            targetTimeout,
+                                            cancellationToken);
                                     }
                                     catch (Exception e)
                                     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Emb.Common.Abstractions;
 using Emb.Common.Models;
@@ -21,7 +22,11 @@ namespace Emb.DataSourceProvider.DvachThread
         private readonly Renderer _renderer = new Renderer();
         private readonly DataExtractor _dataExtractor = new DataExtractor();
 
-        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, IConfigurationRoot configurationRoot, string endpointOptionsString, string stateString)
+        public async Task<IDataFetchResult> GetNewItemsAsPlainTextAsync(ILoggerFactory loggerFactory, 
+            IConfigurationRoot configurationRoot, 
+            string endpointOptionsString, 
+            string stateString,
+            CancellationToken cancellationToken)
         {
             var logger = loggerFactory.CreateLogger<DvachThreadDataSourceProvider>();
             var providerSettings = configurationRoot.GetSection(GetType().Name).Get<ProviderSettings>();
@@ -30,7 +35,7 @@ namespace Emb.DataSourceProvider.DvachThread
 
             var siteUri = new Uri("https://" + providerSettings.Hostname);
             var api = RestService.For<IDvachApi>(siteUri.ToString());
-            var dvachBoard = await api.GetBoard(endpointOptions.BoardId);
+            var dvachBoard = await api.GetBoard(endpointOptions.BoardId, cancellationToken);
             logger.LogDebug($"{dvachBoard.Threads.Count} threads total in {endpointOptions.BoardId}");
 
             var extractedItems = _dataExtractor.Extract(dvachBoard);

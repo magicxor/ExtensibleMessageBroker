@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Emb.Cli.NetCore.DependencyInjection;
@@ -16,7 +17,7 @@ namespace Emb.Cli.NetCore
     internal static class Program
     {
         // see: https://docs.microsoft.com/en-us/windows/desktop/Debug/system-error-codes
-        private const int ErrorSuccess = 0;
+        private const int Success = 0;
         private const int ErrorBadArguments = 160;
 
         private static IConfigurationRoot GetConfigurationRoot()
@@ -43,6 +44,14 @@ namespace Emb.Cli.NetCore
             var serviceProvider = CreateServiceProvider(configurationRoot);
             var applicationSettings = configurationRoot.GetSection(Defaults.ConfigurationSectionName).Get<ApplicationSettings>();
             var messageBrokerService = serviceProvider.GetService<MessageBrokerService>();
+            
+            var cancelTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancelTokenSource.Token;
+            Console.CancelKeyPress += (s, a) =>
+            {
+                cancelTokenSource.Cancel();
+                a.Cancel = true;
+            };
 
             if (commandLineOptions.GenerateSchema)
             {
@@ -60,10 +69,10 @@ namespace Emb.Cli.NetCore
             }
             else
             {
-                await messageBrokerService.RunOnceAsync(applicationSettings.DataFlows);
+                await messageBrokerService.RunOnceAsync(applicationSettings.DataFlows, cancellationToken);
             }
 
-            return ErrorSuccess;
+            return Success;
         }
 
         private static Task<int> OnNotParsed(IEnumerable<Error> errors)
