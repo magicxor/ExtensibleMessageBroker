@@ -42,7 +42,7 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
         public long Op { get; set; }
 
         [JsonProperty("parent")]
-        public string Parent { get; set; }
+        public long Parent { get; set; }
 
         [JsonProperty("sticky")]
         public long Sticky { get; set; }
@@ -58,5 +58,8 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 
         [JsonProperty("trip")]
         public string Trip { get; set; }
+
+        [JsonProperty("views")]
+        public long Views { get; set; }
     }
 }

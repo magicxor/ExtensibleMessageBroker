@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 {
@@ -9,6 +6,12 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
     {
         [JsonProperty("displayname")]
         public string Displayname { get; set; }
+
+        [JsonProperty("duration")]
+        public string Duration { get; set; }
+
+        [JsonProperty("duration_secs")]
+        public long DurationSecs { get; set; }
 
         [JsonProperty("fullname")]
         public string Fullname { get; set; }
@@ -21,9 +24,6 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 
         [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("nsfw")]
-        public long Nsfw { get; set; }
 
         [JsonProperty("path")]
         public string Path { get; set; }
@@ -45,17 +45,5 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.ThreadDto
 
         [JsonProperty("width")]
         public long Width { get; set; }
-
-        [JsonProperty("duration", NullValueHandling = NullValueHandling.Ignore)]
-        public DateTimeOffset? Duration { get; set; }
-
-        [JsonProperty("duration_secs", NullValueHandling = NullValueHandling.Ignore)]
-        public long? DurationSecs { get; set; }
-
-        [OnError]
-        internal void OnError(StreamingContext context, ErrorContext errorContext)
-        {
-            errorContext.Handled = true;
-        }
     }
 }

@@ -17,7 +17,7 @@ namespace Emb.DataSourceProvider.DvachThread.Services
             return dom.DocumentElement?.ToHtml(new PlainTextMarkupFormatter());
         }
 
-        public List<Thread> Extract(DvachBoard dvachBoard)
+        public List<Thread> Extract(DvachBoardDto dvachBoard)
         {
             var threads = dvachBoard.Threads
                 .OrderBy(t => t.Timestamp)

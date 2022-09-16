@@ -36,13 +36,13 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
         public string Name { get; set; }
 
         [JsonProperty("num")]
-        public string Num { get; set; }
+        public long Num { get; set; }
 
         [JsonProperty("op")]
         public long Op { get; set; }
 
         [JsonProperty("parent")]
-        public string Parent { get; set; }
+        public long Parent { get; set; }
 
         [JsonProperty("posts_count")]
         public long PostsCount { get; set; }
@@ -61,5 +61,8 @@ namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
 
         [JsonProperty("trip")]
         public string Trip { get; set; }
+
+        [JsonProperty("views")]
+        public long Views { get; set; }
     }
 }

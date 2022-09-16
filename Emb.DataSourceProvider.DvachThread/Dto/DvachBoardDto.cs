@@ -1,8 +1,8 @@
-﻿namespace Emb.DataSourceProvider.DvachPost.Dto.BoardDto
-{
-    using System.Collections.Generic;
-    using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
+namespace Emb.DataSourceProvider.DvachThread.Dto
+{
     public class DvachBoardDto
     {
         [JsonProperty("advert_bottom_image")]

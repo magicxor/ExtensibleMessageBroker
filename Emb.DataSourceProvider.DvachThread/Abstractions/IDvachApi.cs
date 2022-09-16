@@ -8,6 +8,6 @@ namespace Emb.DataSourceProvider.DvachThread.Abstractions
     public interface IDvachApi
     {
         [Get("/{boardId}/catalog_num.json")]
-        Task<DvachBoard> GetBoard(string boardId, CancellationToken cancellationToken);
+        Task<DvachBoardDto> GetBoard(string boardId, CancellationToken cancellationToken);
     }
 }

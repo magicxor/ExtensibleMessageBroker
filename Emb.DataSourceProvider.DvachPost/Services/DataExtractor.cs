@@ -46,12 +46,12 @@ namespace Emb.DataSourceProvider.DvachPost.Services
                 .ToList();
         }
 
-        private async Task<List<Dto.ThreadDto.Post>> ExtractPostsAsync(IDvachApi api, EndpointOptions endpointOptions, IList<string> threadIdentifiers, CancellationToken cancellationToken)
+        private async Task<List<Dto.ThreadDto.Post>> ExtractPostsAsync(IDvachApi api, EndpointOptions endpointOptions, IList<long> threadIdentifiers, CancellationToken cancellationToken)
         {
             var result = new List<Dto.ThreadDto.Post>();
             foreach (var threadId in threadIdentifiers)
             {
-                var threadDto = await api.GetThread(endpointOptions.BoardId, threadId, cancellationToken);
+                var threadDto = await api.GetThread(endpointOptions.BoardId, threadId.ToString(), cancellationToken);
                 var posts = threadDto?.Threads?.FirstOrDefault()?.Posts ??
                             new List<Dto.ThreadDto.Post>();
                 result.AddRange(posts);
