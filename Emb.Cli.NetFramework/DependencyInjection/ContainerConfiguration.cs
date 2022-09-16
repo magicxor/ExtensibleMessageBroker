@@ -15,10 +15,11 @@ namespace Emb.Cli.NetFramework.DependencyInjection
     {
         private static ILoggerFactory CreateLoggerFactory(ApplicationSettings applicationSettings)
         {
-            var loggerFactory = new LoggerFactory();
             var logPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location) ?? throw new InvalidOperationException(), applicationSettings.LogDirectoryName, "log-{Date}.txt");
-            loggerFactory
-                .AddFile(logPath, applicationSettings.LogLevel, retainedFileCountLimit: 10);
+            var loggerFactory = LoggerFactory.Create(builder => builder
+                .AddConsole()
+                .AddFile(logPath, applicationSettings.LogLevel, retainedFileCountLimit: 10)
+            );
             return loggerFactory;
         }
 
