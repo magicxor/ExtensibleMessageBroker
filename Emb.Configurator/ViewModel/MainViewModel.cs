@@ -1,5 +1,4 @@
 using Emb.Configurator.Services;
-using GalaSoft.MvvmLight.Command;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using Newtonsoft.Json;
@@ -9,6 +8,7 @@ using Newtonsoft.Json.Schema.Generation;
 using PropertyChanged;
 using System;
 using System.Text.RegularExpressions;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Emb.Configurator.ViewModel
 {

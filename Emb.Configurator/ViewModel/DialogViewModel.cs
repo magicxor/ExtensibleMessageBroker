@@ -1,5 +1,5 @@
-﻿using Emb.Configurator.Interfaces;
-using GalaSoft.MvvmLight.Command;
+﻿using CommunityToolkit.Mvvm.Input;
+using Emb.Configurator.Interfaces;
 using PropertyChanged;
 
 namespace Emb.Configurator.ViewModel
