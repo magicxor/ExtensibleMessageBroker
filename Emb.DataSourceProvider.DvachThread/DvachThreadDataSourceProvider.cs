@@ -34,7 +34,9 @@ namespace Emb.DataSourceProvider.DvachThread
             var state = JsonConvert.DeserializeObject<State>(stateString) ?? new State();
 
             var siteUri = new Uri("https://" + providerSettings.Hostname);
-            var api = RestService.For<IDvachApi>(siteUri.ToString());
+            var api = RestService.For<IDvachApi>(siteUri.ToString(), new RefitSettings {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+            });
             var dvachBoard = await api.GetBoard(endpointOptions.BoardId, cancellationToken);
             logger.LogDebug($"{dvachBoard.Threads.Count} threads total in {endpointOptions.BoardId}");
 

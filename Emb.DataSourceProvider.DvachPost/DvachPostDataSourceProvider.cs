@@ -32,7 +32,9 @@ namespace Emb.DataSourceProvider.DvachPost
             var renderer = new Renderer();
 
             var siteUri = new Uri("https://" + providerSettings.Hostname);
-            var api = RestService.For<IDvachApi>(siteUri.ToString());
+            var api = RestService.For<IDvachApi>(siteUri.ToString(), new RefitSettings {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+            });
             
             var extractedItems = await dataExtractor.ExtractAsync(api, state, endpointOptions, cancellationToken);
             var filteredItems = dataExtractor.Filter(extractedItems, state, endpointOptions);

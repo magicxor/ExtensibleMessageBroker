@@ -34,7 +34,9 @@ namespace Emb.DataSourceProvider.VkFeed
             var state = JsonConvert.DeserializeObject<State>(stateString) ?? new State();
 
             var siteUri = new Uri("https://api.vk.com");
-            var api = RestService.For<IVkApi>(siteUri.ToString());
+            var api = RestService.For<IVkApi>(siteUri.ToString(), new RefitSettings {
+                ContentSerializer = new NewtonsoftJsonContentSerializer(),
+            });
             var extractedItems = await _dataExtractor.ExtractAsync(logger, api, providerSettings, state, endpointOptions, cancellationToken);
             var filteredItems = _dataExtractor.Filter(extractedItems, state, endpointOptions);
             var renderedItems = _renderer.RenderAsPlainText(filteredItems);
