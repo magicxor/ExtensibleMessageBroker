@@ -96,7 +96,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
                     var uri = $"https://{providerSettings.Hostname}/s/{endpointOptions.ChannelName}";
-                    _logger.LogTrace($"fetch {uri}");
+                    _logger.LogTrace("fetch {Uri}", uri);
                     var response = await httpClient.GetAsync(uri);
                     var content = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == HttpStatusCode.Redirect || !response.IsSuccessStatusCode)
@@ -111,7 +111,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                     {
                         Thread.Sleep(200); // todo: move to config
                         var pageUri = $"https://{providerSettings.Hostname}/s/{endpointOptions.ChannelName}?before={firstPostId}";
-                        _logger.LogTrace($"fetch next page: {pageUri}");
+                        _logger.LogTrace("fetch next page: {PageUri}", pageUri);
                         var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, pageUri)
                         {
                             Headers =
@@ -141,7 +141,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                         firstPostId = pagePosts.FirstOrDefault()?.Id;
                     }
                     
-                    _logger.LogInformation($"{posts.Count} posts found");
+                    _logger.LogInformation("{PostsCount} posts found", posts.Count);
                     return posts;
                 }
             }
@@ -158,7 +158,7 @@ namespace Emb.DataSourceProvider.TelegramChannel.Services
                     && (endpointOptions.ExcludedPatterns == null || !endpointOptions.ExcludedPatterns.Any() || !endpointOptions.ExcludedPatterns.Any(pattern => Regex.IsMatch(ri.Text, pattern, RegexOptions.IgnoreCase | RegexOptions.Multiline))))
                 .ToList();
 
-            _logger.LogInformation($"{result.Count} posts match");
+            _logger.LogInformation("{ResultCount} posts match", result.Count);
             return result;
         }
     }

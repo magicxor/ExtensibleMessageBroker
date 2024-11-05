@@ -38,7 +38,7 @@ namespace Emb.DataSourceProvider.DvachThread
                 ContentSerializer = new NewtonsoftJsonContentSerializer(),
             });
             var dvachBoard = await api.GetBoard(endpointOptions.BoardId, cancellationToken);
-            logger.LogDebug($"{dvachBoard.Threads.Count} threads total in {endpointOptions.BoardId}");
+            logger.LogDebug("{ThreadsCount} threads total in {EndpointOptionsBoardId}", dvachBoard.Threads.Count, endpointOptions.BoardId);
 
             var extractedItems = _dataExtractor.Extract(dvachBoard);
             var filteredItems = _dataExtractor.Filter(extractedItems, state, endpointOptions);

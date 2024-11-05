@@ -44,15 +44,9 @@ namespace Emb.TargetProvider.Telegram
                     throw new ArgumentOutOfRangeException();
             }
 
-            TelegramBotClient telegramBotClient;
-            if (webProxy == null)
-            {
-                telegramBotClient = new TelegramBotClient(providerSettings.Token);
-            }
-            else
-            {
-                telegramBotClient = new TelegramBotClient(providerSettings.Token, webProxy);
-            }
+            var telegramBotClient = new TelegramBotClient(providerSettings.Token);
+
+            // todo: use webProxy if needed in order to circumvent Telegram blocking
 
             return telegramBotClient;
         }

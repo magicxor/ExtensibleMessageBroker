@@ -26,18 +26,23 @@ namespace Emb.RegExprTests
                 foreach (var testCaseFile in TestDir.EnumerateFiles(includeTestsDir))
                 {
                     var testCase = File.ReadAllText(testCaseFile);
-                    Assert.IsTrue(TestDir.EnumerateFiles(includePatternsDir).Any(patternFile => Regex.IsMatch(testCase, File.ReadAllText(patternFile))), $"{nameof(testCaseDir)} = {testCaseDir}, {nameof(testCaseFile)} = {testCaseFile}, {nameof(testCase)} = {testCase}");
-                    Assert.IsFalse(TestDir.EnumerateFiles(excludePatternsDir).Any(patternFile => Regex.IsMatch(testCase, File.ReadAllText(patternFile))), $"{nameof(testCaseDir)} = {testCaseDir}, {nameof(testCaseFile)} = {testCaseFile}, {nameof(testCase)} = {testCase}");
+
+                    Assert.That(TestDir.EnumerateFiles(includePatternsDir).Any(patternFile => Regex.IsMatch(testCase, File.ReadAllText(patternFile))), Is.True, $"{nameof(testCaseDir)} = {testCaseDir}, {nameof(testCaseFile)} = {testCaseFile}, {nameof(testCase)} = {testCase}");
+                    Assert.That(TestDir.EnumerateFiles(excludePatternsDir).Any(patternFile => Regex.IsMatch(testCase, File.ReadAllText(patternFile))), Is.False, $"{nameof(testCaseDir)} = {testCaseDir}, {nameof(testCaseFile)} = {testCaseFile}, {nameof(testCase)} = {testCase}");
+
                     includeTests++;
                 }
 
                 foreach (var testCaseFile in TestDir.EnumerateFiles(excludeTestsDir))
                 {
                     var testCase = File.ReadAllText(testCaseFile);
-                    Assert.IsTrue(
+
+                    Assert.That(
                         TestDir.EnumerateFiles(includePatternsDir).All(patternFile => !Regex.IsMatch(testCase, File.ReadAllText(patternFile)))
                         || TestDir.EnumerateFiles(excludePatternsDir).Any(patternFile => Regex.IsMatch(testCase, File.ReadAllText(patternFile))),
+                        Is.True,
                         $"{nameof(testCaseDir)} = {testCaseDir}, {nameof(testCaseFile)} = {testCaseFile}, {nameof(testCase)} = {testCase}");
+
                     excludeTests++;
                 }
 
