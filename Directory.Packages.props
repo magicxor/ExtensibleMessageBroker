@@ -37,6 +37,6 @@
     <PackageVersion Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageVersion Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
     <PackageVersion Include="System.Text.Encoding.Extensions" Version="4.3.0" />
-    <PackageVersion Include="Telegram.Bot" Version="22.0.0" />
+    <PackageVersion Include="Telegram.Bot" Version="22.0.1" />
   </ItemGroup>
 </Project>
