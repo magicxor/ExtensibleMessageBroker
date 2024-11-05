@@ -31,18 +31,18 @@ namespace Emb.Core.Services
         {
             try
             {
-                var executableLocation = Assembly.GetEntryAssembly().Location;
-                _logger.LogDebug($"executable location: {executableLocation}");
+                var executableLocation = Assembly.GetEntryAssembly()?.Location;
+                _logger.LogDebug("executable location: {ExecutableLocation}", executableLocation);
 
                 var pluginRootDirectory = Path.GetDirectoryName(executableLocation) ?? throw new InvalidOperationException();
-                _logger.LogDebug($"plugin root directory: {executableLocation}");
+                _logger.LogDebug("plugin root directory: {PluginRootDirectory}", pluginRootDirectory);
 
                 var assemblies = Directory
                     .GetFiles(pluginRootDirectory, "*.dll", SearchOption.AllDirectories)
                     .Where(f => f.Contains("Emb.TargetProvider") || f.Contains("Emb.DataSourceProvider"))
                     .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath)
                     .ToList();
-                _logger.LogDebug("found assemblies: " + string.Join(", ", assemblies.Select(assembly => assembly.FullName)));
+                _logger.LogDebug("found assemblies: {FoundAssemblies}", string.Join(", ", assemblies.Select(assembly => assembly.FullName)));
 
                 var configuration = new ContainerConfiguration()
                     .WithAssemblies(assemblies);
@@ -58,8 +58,8 @@ namespace Emb.Core.Services
                     TargetProviders = TargetProviders.ToList(),
                 };
 
-                _logger.LogDebug("found data source providers: " + string.Join(", ", result.DataSourceProviders.Select(dataSourceProvider => dataSourceProvider.GetType().Name)));
-                _logger.LogDebug("found targets: " + string.Join(", ", result.TargetProviders.Select(dataSourceProvider => dataSourceProvider.GetType().Name)));
+                _logger.LogDebug("found data source providers: {FoundDataSources}", string.Join(", ", result.DataSourceProviders.Select(dataSourceProvider => dataSourceProvider.GetType().Name)));
+                _logger.LogDebug("found targets: {FoundTargets}", string.Join(", ", result.TargetProviders.Select(dataSourceProvider => dataSourceProvider.GetType().Name)));
 
                 return result;
             }

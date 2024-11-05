@@ -42,24 +42,24 @@ namespace Emb.Core.Services
         {
             if (modelType != null)
             {
-                _logger.LogTrace($"start json schema generation for {providerName}.{modelName} ({nameof(modelType)}: {modelType.Name})");
+                _logger.LogTrace("start json schema generation for {ProviderName}.{ModelName} ({ModelTypeName}: {ModelType})", providerName, modelName, nameof(modelType), modelType.Name);
 
                 var schema = _schemaGenerator.Generate(modelType);
                 var schemaFilePath = Path.Combine(basePath, $"{providerName}_{modelName}.schema.json");
                 var schemaString = schema.ToString();
                 File.WriteAllText(schemaFilePath, schemaString);
 
-                _logger.LogTrace($"schema generation was successful: {schemaFilePath}");
+                _logger.LogTrace("schema generation was successful: {SchemaFilePath}", schemaFilePath);
             }
             else
             {
-                _logger.LogTrace($"skip json schema generation for {providerName}.{modelName} because {nameof(modelType)} is null");
+                _logger.LogTrace("skip json schema generation for {ProviderName}.{ModelName} because {ModelTypeName} is null", providerName, modelName, nameof(modelType));
             }
         }
 
         public void GenerateJsonSchemas(string basePath)
         {
-            _logger.LogInformation($"running {nameof(GenerateJsonSchemas)}...");
+            _logger.LogInformation("running {GenerateJsonSchemasName}...", nameof(GenerateJsonSchemas));
 
             foreach (var dataSourceProvider in _pluginSet.DataSourceProviders)
             {
@@ -85,7 +85,7 @@ namespace Emb.Core.Services
 
         public async Task RunOnceAsync(IList<DataFlow> dataFlows, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"running {nameof(RunOnceAsync)}...");
+            _logger.LogInformation("running {RunOnceAsyncName}...", nameof(RunOnceAsync));
 
             var sourceTimeout = (_applicationSettings.SourceTimeoutInSeconds.HasValue && _applicationSettings.SourceTimeoutInSeconds.Value > 0)
                 ? TimeSpan.FromSeconds(_applicationSettings.SourceTimeoutInSeconds.Value)
@@ -102,7 +102,7 @@ namespace Emb.Core.Services
                     var dataSourceProvider = _pluginSet.DataSourceProviders.FirstOrDefault(dsp => dsp.GetType().Name == dataFlow.Source.ProviderName);
                     if (dataSourceProvider == null)
                     {
-                        _logger.LogError($"no data source provider found with name {dataFlow.Source.ProviderName}.");
+                        _logger.LogError("no data source provider found with name {SourceProviderName}", dataFlow.Source.ProviderName);
                     }
                     else
                     {
@@ -117,7 +117,7 @@ namespace Emb.Core.Services
                             var targetProvider = _pluginSet.TargetProviders.FirstOrDefault(tgp => tgp.GetType().Name == target.ProviderName);
                             if (targetProvider == null)
                             {
-                                _logger.LogError($"no target provider found with name {target.ProviderName}.");
+                                _logger.LogError("no target provider found with name {TargetProviderName}", target.ProviderName);
                             }
                             else
                             {
@@ -132,7 +132,7 @@ namespace Emb.Core.Services
                                     }
                                     catch (Exception e)
                                     {
-                                        _logger.LogError(e, $"error during sending content {text} via target provider {targetProvider.GetType().Name}");
+                                        _logger.LogError(e, "error during sending content {Text} via target provider {Name}", text, targetProvider.GetType().Name);
                                     }
                                 }
                             }
@@ -141,7 +141,7 @@ namespace Emb.Core.Services
                 }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, $"error during {dataFlow.Name} processing");
+                    _logger.LogError(e, "error during {DataFlowName} processing", dataFlow.Name);
                 }
             }
         }
@@ -156,7 +156,7 @@ namespace Emb.Core.Services
         {
             var stateFilePath = GetStateFilePath(dataFlowName);
 
-            _logger.LogDebug($"save state {stateString} of {dataFlowName} to {stateFilePath}");
+            _logger.LogDebug("save state {StateString} of {DataFlowName} to {StateFilePath}", stateString, dataFlowName, stateFilePath);
 
             new FileInfo(stateFilePath).Directory?.Create();
             File.WriteAllText(stateFilePath, stateString);
@@ -166,7 +166,7 @@ namespace Emb.Core.Services
         {
             var stateFilePath = GetStateFilePath(dataFlowName);
 
-            _logger.LogDebug($"load state of {dataFlowName} from {stateFilePath}");
+            _logger.LogDebug("load state of {DataFlowName} from {StateFilePath}", dataFlowName, stateFilePath);
 
             return File.Exists(stateFilePath) ? File.ReadAllText(stateFilePath) : string.Empty;
         }

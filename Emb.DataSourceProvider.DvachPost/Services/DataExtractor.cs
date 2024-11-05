@@ -65,13 +65,13 @@ namespace Emb.DataSourceProvider.DvachPost.Services
             var dvachBoard = await api.GetBoard(endpointOptions.BoardId, cancellationToken);
 
             var extractedThreads = ExtractThreads(dvachBoard);
-            _logger.LogInformation($"{extractedThreads.Count} threads total in {endpointOptions.BoardId}");
+            _logger.LogInformation("{ExtractedThreadsCount} threads total in {EndpointOptionsBoardId}", extractedThreads.Count, endpointOptions.BoardId);
 
             var filteredThreads = FilterThreads(extractedThreads, state, endpointOptions);
-            _logger.LogInformation($"{filteredThreads.Count} relevant threads in {endpointOptions.BoardId}");
+            _logger.LogInformation("{FilteredThreadsCount} relevant threads in {EndpointOptionsBoardId}", filteredThreads.Count, endpointOptions.BoardId);
 
             var extractedPosts = await ExtractPostsAsync(api, endpointOptions, filteredThreads.Select(p => p.Num).ToList(), cancellationToken);
-            _logger.LogInformation($"{extractedPosts.Count} posts extracted from {endpointOptions.BoardId} threads");
+            _logger.LogInformation("{ExtractedPostsCount} posts extracted from {EndpointOptionsBoardId} threads", extractedPosts.Count, endpointOptions.BoardId);
 
             return extractedPosts;
         }

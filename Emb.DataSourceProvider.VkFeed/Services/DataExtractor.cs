@@ -50,7 +50,7 @@ namespace Emb.DataSourceProvider.VkFeed.Services
             do
             {
                 apiResult = await GetVkFeedAsync(api, providerSettings.AccessToken, startFrom, cancellationToken);
-                logger.LogDebug($"{nameof(GetVkFeedAsync)} result: {apiResult.Response.Items.Count} items, NextFrom = {apiResult.Response.NextFrom}");
+                logger.LogDebug("{VkFeedAsyncName} result: {ItemsCount} items, NextFrom = {ResponseNextFrom}", nameof(GetVkFeedAsync), apiResult.Response.Items.Count, apiResult.Response.NextFrom);
                 startFrom = apiResult.Response.NextFrom;
                 extractedProfiles.AddRange(apiResult.Response.Profiles);
                 extractedItems.AddRange(apiResult.Response.Items);

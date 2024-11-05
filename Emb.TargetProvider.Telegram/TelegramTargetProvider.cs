@@ -7,6 +7,7 @@ using System;
 using System.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace Emb.TargetProvider.Telegram
@@ -53,9 +54,9 @@ namespace Emb.TargetProvider.Telegram
                     try
                     {
                         attempt++;
-                        logger.LogDebug($"{nameof(TelegramTargetProvider)}.{nameof(SendAsync)} attempt №{attempt}");
+                        logger.LogDebug("{TelegramTargetProviderName}.{SendAsyncName} attempt {Attempt}", nameof(TelegramTargetProvider), nameof(SendAsync), attempt);
 
-                        await telegramBotClient.SendTextMessageAsync(new ChatId(endpointOptionsString), text, cancellationToken: cancellationToken);
+                        await telegramBotClient.SendMessage(new ChatId(endpointOptionsString), text, cancellationToken: cancellationToken);
 
                         if (providerSettings.DelayMilliseconds > 0)
                         {
@@ -64,7 +65,7 @@ namespace Emb.TargetProvider.Telegram
                     }
                     catch(Exception e)
                     {
-                        logger.LogTrace(e, $"{nameof(SendAsync)} error");
+                        logger.LogTrace(e, "{SendAsyncName} error", nameof(SendAsync));
                         throw;
                     }
                 });
