@@ -10,7 +10,15 @@
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="Refit" />
     <PackageReference Include="Refit.Newtonsoft.Json" />
+    <PackageReference Include="System.Collections" />
     <PackageReference Include="System.ComponentModel.Annotations" />
+    <PackageReference Include="System.Diagnostics.Debug" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" />
+    <PackageReference Include="System.Net.Primitives" />
+    <PackageReference Include="System.Reflection.Primitives" />
+    <PackageReference Include="System.Runtime.Handles" />
+    <PackageReference Include="System.Security.Cryptography.Primitives" />
+    <PackageReference Include="System.Text.Encoding.Extensions" />
   </ItemGroup>
 
   <ItemGroup>

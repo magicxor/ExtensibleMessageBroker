@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json.Schema" />
+    <PackageReference Include="System.Reflection.Primitives" />
     <PackageReference Include="System.Runtime.Loader" />
   </ItemGroup>
 

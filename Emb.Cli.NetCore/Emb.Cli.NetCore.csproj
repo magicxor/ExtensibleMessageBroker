@@ -20,6 +20,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Newtonsoft.Json.Schema" />
     <PackageReference Include="Serilog.Extensions.Logging.File" />
+    <PackageReference Include="System.Collections" />
+    <PackageReference Include="System.Diagnostics.Debug" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" />
+    <PackageReference Include="System.Reflection.Primitives" />
+    <PackageReference Include="System.Runtime.Handles" />
+    <PackageReference Include="System.Text.Encoding.Extensions" />
   </ItemGroup>
 
   <ItemGroup>
