@@ -12,10 +12,12 @@
     <PackageReference Include="System.Collections" />
     <PackageReference Include="System.Diagnostics.Debug" />
     <PackageReference Include="System.IO.FileSystem.Primitives" />
+    <PackageReference Include="System.Net.Http" />
     <PackageReference Include="System.Net.Primitives" />
     <PackageReference Include="System.Reflection.Primitives" />
     <PackageReference Include="System.Runtime.Handles" />
     <PackageReference Include="System.Security.Cryptography.Primitives" />
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" />
     <PackageReference Include="System.Text.Encoding.Extensions" />
   </ItemGroup>
 
