@@ -11,7 +11,7 @@ name: release
 env:
   PROJECT_DIR: ./Emb.Cli.NetCore
   PROJECT_PATH: ./Emb.Cli.NetCore/Emb.Cli.NetCore.csproj
-  FRAMEWORK: net8.0
+  FRAMEWORK: net10.0
   SELF_CONTAINED: true
   FILE_PREFIX: ExtensibleMessageBroker_
 
@@ -38,7 +38,7 @@ jobs:
       - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Get branch and tag
         id: branch_name
